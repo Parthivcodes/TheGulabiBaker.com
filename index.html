@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE GULABI BAKER — Artisanal Haute Confectionery • Glen Eden, Auckland</title>
+  <meta name="description" content="Artisanal dessert bakehouse handcrafted in Glen Eden, Auckland with organic Damask rose, Iranian saffron, Sicilian pistachios, and pure New Zealand grass-fed butter.">
+  <meta name="theme-color" content="#38121A">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌹</text></svg>">
+</head>
+<body>
+
+  <!-- ================= ANNOUNCEMENT MARQUEE ================= -->
+  <aside class="announcement-bar" aria-label="Announcement">
+    <div class="announcement-track">
+      <div class="announcement-item">
+        <span>HAUTE BAKEHOUSE D'ORIENT</span>
+        <span class="sep">✦</span>
+        <span>GLEN EDEN, AUCKLAND</span>
+        <span class="sep">✦</span>
+        <span>HANDCRAFTED IN LIMITED DAILY BATCHES</span>
+        <span class="sep">✦</span>
+        <span>COMPLIMENTARY VELVET GIFT BOX ON ORDERS OVER $50</span>
+        <span class="sep">✦</span>
+        <span>SAME-DAY CHILLED AUCKLAND COURIER</span>
+        <span class="sep">✦</span>
+        <span>BESPOKE WEDDING & EVENT CONSULTATIONS OPEN FOR 2026</span>
+        <span class="sep">✦</span>
+      </div>
+      <div class="announcement-item">
+        <span>HAUTE BAKEHOUSE D'ORIENT</span>
+        <span class="sep">✦</span>
+        <span>GLEN EDEN, AUCKLAND</span>
+        <span class="sep">✦</span>
+        <span>HANDCRAFTED IN LIMITED DAILY BATCHES</span>
+        <span class="sep">✦</span>
+        <span>COMPLIMENTARY VELVET GIFT BOX ON ORDERS OVER $50</span>
+        <span class="sep">✦</span>
+        <span>SAME-DAY CHILLED AUCKLAND COURIER</span>
+        <span class="sep">✦</span>
+        <span>BESPOKE WEDDING & EVENT CONSULTATIONS OPEN FOR 2026</span>
+        <span class="sep">✦</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MINIMALIST LUXURY NAVBAR ================= -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <nav class="nav-left" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#menu" class="nav-link active">Creations</a></li>
+          <li><a href="#moment" class="nav-link">Daily Craving</a></li>
+          <li><a href="#bespoke" class="nav-link">Bespoke Studio</a></li>
+          <li><a href="#story" class="nav-link">Our Story</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-brand">
+        <a href="#" class="brand-link">
+          <span class="brand-title">THE GULABI BAKER</span>
+          <span class="brand-subtitle">HAUTE BAKEHOUSE • GLEN EDEN, AUCKLAND</span>
+        </a>
+      </div>
+
+      <div class="nav-right">
+        <!-- Sound Ambience Toggle -->
+        <button class="sound-toggle-btn" id="soundToggle" title="Toggle Atelier Ambient Sound" aria-label="Toggle sound">
+          <div class="sound-wave">
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+            <span class="sound-bar"></span>
+          </div>
+        </button>
+
+        <!-- Location Badge -->
+        <div class="nav-action-btn" style="cursor: default;" id="citySelectorBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="selectedCityLabel">Glen Eden</span>
+        </div>
+
+        <!-- Account / Auth Trigger -->
+        <button class="nav-action-btn" id="authBtn" aria-label="Account Login or Profile">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="authBtnLabel">Atelier Club</span>
+        </button>
+
+        <!-- Bag Button -->
+        <button class="nav-action-btn nav-bag-btn" id="bagBtn" aria-label="View Shopping Bag">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Bag</span>
+          <span class="bag-count" id="bagCount">0</span>
+        </button>
+
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Open Mobile Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION (EDITORIAL LUXURY COVER) ================= -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-editorial-grid">
+      <div class="hero-text-content">
+        <div class="hero-edition-tag">
+          <span class="dot"></span>
+          <span>ATELIER EDITION N° 07 &nbsp;•&nbsp; SPRING 2026</span>
+        </div>
+
+        <h1 class="hero-main-title">
+          POETRY IN <br>
+          <span class="italic-flair">Rose & Sugar</span>
+        </h1>
+
+        <p class="hero-statement">
+          Where classical <strong>artisanal bakehouse craft</strong> meets the fragrant botanical romance of ancient Persian & Royal Indian kitchens. Slow-infused with organic Damask rosewater, Iranian saffron, and 100% pure New Zealand pasture-fed butter.
+        </p>
+
+        <div class="hero-actions-group">
+          <a href="#menu" class="btn-primary">
+            <span>Explore The Bento Menu</span>
+            <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="#bespoke" class="btn-secondary">
+            <span>Custom Showpieces</span>
+          </a>
+        </div>
+
+        <div class="hero-tasting-bar">
+          <div class="tasting-metric">
+            <span class="metric-val">100%</span>
+            <span class="metric-label">Pure NZ Butter</span>
+          </div>
+          <div class="tasting-metric">
+            <span class="metric-val">48h</span>
+            <span class="metric-label">Slow Botanical Infusion</span>
+          </div>
+          <div class="tasting-metric">
+            <span class="metric-val">0%</span>
+            <span class="metric-label">Artificial Additives</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Composition with Floating Layered Badges -->
+      <div class="hero-visual-wrapper">
+        <div class="floating-award-tag">
+          ✦ AUCKLAND CULINARY EXCELLENCE 2026
+        </div>
+
+        <!-- Floating Badge 1: Tasting Notes -->
+        <div class="floating-badge badge-notes" id="heroBadgeNotes">
+          <span class="badge-label">Signature Showpiece</span>
+          <p class="badge-text">Gulab Jamun Cake, Rosewater Mawa & 24k Gold Foil</p>
+        </div>
+
+        <div class="hero-arch-frame">
+          <div class="hero-cake-image-box">
+            <img src="assets/images/card_hero_gulab_jamun_3tier.jpg" alt="Gulab Jamun Celebration Cake" class="hero-cake-img" id="heroCakeImg">
+          </div>
+        </div>
+
+        <!-- Floating Badge 2: Quick Reserve Showpiece -->
+        <div class="floating-badge badge-order" id="heroBadgeOrder">
+          <div class="badge-price-box">
+            <span class="price-tag">From $70</span>
+            <span class="price-sub">Celebration Cake</span>
+          </div>
+          <button class="badge-add-btn" id="heroQuickAdd" title="Quick Add to Bag" aria-label="Add Gulab Jamun Cake to bag">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORY & DIETARY FILTER RAIL ================= -->
+  <section class="container" id="menu">
+    <div class="section-header">
+      <span class="section-tag">[ 01 / ARTISANAL SELECTION ]</span>
+      <h2 class="section-title">The Bento <em>Collection</em></h2>
+      <p class="section-desc">Each dessert is individually numbered, freshly fired at our Glen Eden bakehouse, and packaged in our signature velvet presentation boxes.</p>
+    </div>
+
+    <div class="filter-wrapper">
+      <!-- Category Scroll Rail -->
+      <div class="category-scroll-rail" role="tablist">
+        <button class="category-pill active" data-category="all" role="tab">
+          <span>All Creations</span>
+          <span class="pill-count">(6)</span>
+        </button>
+        <button class="category-pill" data-category="cakes" role="tab">
+          <span>Celebration Cakes</span>
+          <span class="pill-count">(5)</span>
+        </button>
+        <button class="category-pill" data-category="cupcakes" role="tab">
+          <span>Artisanal Cupcakes</span>
+          <span class="pill-count">(1)</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THE BALANCED BENTO SHOWCASE GRID ================= -->
+  <section class="container bento-section">
+    <div class="bento-grid" id="bentoGrid">
+
+      <!-- 1. GULAB JAMUN CAKE -->
+      <article class="bento-card" data-id="item-gulab-cake" data-category="cakes">
+        <div class="card-floating-tag">[ N° 01 • SIGNATURE SHOWPIECE ⭐ ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_hero_gulab_jamun_3tier.jpg" alt="Gulab Jamun Cake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">EDITION NO. 01 / GRAND SHOWPIECE</div>
+            <h3 class="card-title">Gulab Jamun Cake</h3>
+            <p class="card-desc">Layered with aromatic cardamom sponge, rosewater syrup, slow-simmered mawa cream, halved golden gulab jamuns, and 24k edible gold foil.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Mawa Cream</span>
+              <span class="note-pill">Rosewater Syrup</span>
+              <span class="note-pill">24k Gold Leaf</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">From $70</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-gulab-cake')">Select Size</button>
+              <button class="btn-add-cart" onclick="addToBag('item-gulab-cake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2. KESAR PISTA CAKE -->
+      <article class="bento-card" data-id="item-kesar-pista-cake" data-category="cakes">
+        <div class="card-floating-tag">[ N° 02 • ROYAL SAFFRON & PISTACHIO ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_kesar_pista_cake.jpg" alt="Kesar Pista Cake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">EDITION NO. 02 / SAFFRON ATELIER</div>
+            <h3 class="card-title">Kesar Pista Cake</h3>
+            <p class="card-desc">Saffron-infused hung curd cream mousse, golden saffron syrup streaks, roasted Iranian pistachios, and tender cardamom chiffon sponge.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Kesar Saffron</span>
+              <span class="note-pill">Pistachio Crunch</span>
+              <span class="note-pill">Pure NZ Butter</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">From $80</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-kesar-pista-cake')">Select Size</button>
+              <button class="btn-add-cart" onclick="addToBag('item-kesar-pista-cake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. RASMALAI CAKE -->
+      <article class="bento-card" data-id="item-rasmalai-cake" data-category="cakes">
+        <div class="card-floating-tag">[ N° 03 • BEST SELLER ⭐ ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_rasmalai_cake_real.jpg" alt="Rasmalai Cake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">EDITION NO. 03 / SIGNATURE BAKE</div>
+            <h3 class="card-title">Rasmalai Cake</h3>
+            <p class="card-desc">Soft cardamom sponge layered with slow-steeped saffron rabdi cream, authentic soft rasmalai dumplings, pistachio praline, and pure New Zealand grass-fed butter.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Kesar Rabdi</span>
+              <span class="note-pill">Soft Rasmalai</span>
+              <span class="note-pill">Pure NZ Butter</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">From $75</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-rasmalai-cake')">Select Size</button>
+              <button class="btn-add-cart" onclick="addToBag('item-rasmalai-cake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. BISCOFF FRESH CREAM CAKE -->
+      <article class="bento-card" data-id="item-biscoff-cake" data-category="cakes">
+        <div class="card-floating-tag">[ N° 04 • LOTUS CARAMEL CRUNCH ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_biscoff_fresh_cream_cake.jpg" alt="Biscoff Fresh Cream Cake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">EDITION NO. 04 / BISCOFF SPECULOOS</div>
+            <h3 class="card-title">Biscoff Fresh Cream Cake</h3>
+            <p class="card-desc">Layers of light vanilla sponge, Lotus Biscoff spread drip, caramelized speculoos cookie crunch, and whipped New Zealand fresh cream rosettes.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Lotus Biscoff</span>
+              <span class="note-pill">Speculoos Crumb</span>
+              <span class="note-pill">Fresh NZ Cream</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">From $70</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-biscoff-cake')">Select Size</button>
+              <button class="btn-add-cart" onclick="addToBag('item-biscoff-cake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5. MASALA CHAI CAKE -->
+      <article class="bento-card" data-id="item-chai-cake" data-category="cakes">
+        <div class="card-floating-tag">[ N° 05 • SPICED CHAI & PARLE-G ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_masala_chai_cake.jpg" alt="Masala Chai Cake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">EDITION NO. 05 / AROMATIC CHAI</div>
+            <h3 class="card-title">Masala Chai Cake</h3>
+            <p class="card-desc">Infused with freshly crushed ginger, cinnamon, green cardamom, and rich Assam tea steeped in pure New Zealand dairy, garnished with Parle-G biscuits.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Assam Tea</span>
+              <span class="note-pill">Parle-G Crunch</span>
+              <span class="note-pill">Green Cardamom</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">From $65</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-chai-cake')">Select Size</button>
+              <button class="btn-add-cart" onclick="addToBag('item-chai-cake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. GULAB JAMUN CUPCAKE -->
+      <article class="bento-card" data-id="item-gulab-cupcake" data-category="cupcakes">
+        <div class="card-floating-tag">[ N° 06 • INDIVIDUAL CUPCAKE ⭐ ]</div>
+        <div class="card-media-box">
+          <img src="assets/images/card_gulab_jamun_cupcakes.jpg" alt="Gulab Jamun Cupcake" class="card-img">
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-edition-num">INDIVIDUAL CUPCAKE</div>
+            <h3 class="card-title">Gulab Jamun Cupcake ⭐</h3>
+            <p class="card-desc">Handcrafted vanilla crumb crowned with authentic soft gulab jamun, rosewater mawa buttercream, pistachio dust, and 24k gold leaf.</p>
+            <div class="card-tasting-notes">
+              <span class="note-pill">Soft Gulab Jamun</span>
+              <span class="note-pill">Mawa Cream</span>
+              <span class="note-pill">24k Gold Foil</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price-group">
+              <span class="card-price">$6.99</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-taste-notes" onclick="openTasteModal('item-gulab-cupcake')">Notes</button>
+              <button class="btn-add-cart" onclick="addToBag('item-gulab-cupcake')" title="Add to Bag">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= SPECIAL EDITORIAL FEATURE: MADE FOR THE MOMENT ================= -->
+  <section class="moment-section" id="moment">
+    <div class="container moment-editorial-container">
+      <div class="moment-visual">
+        <div class="moment-img-frame">
+          <span class="moment-live-pill">
+            <span class="live-pulse"></span>
+            <span>FRESH FROM THE ATELIER OVEN</span>
+          </span>
+          <img src="assets/images/gulab_jamun_cupcakes.jpg" alt="Gulab Jamun Cupcakes" class="moment-img">
+        </div>
+      </div>
+
+      <div class="moment-content">
+        <span class="section-tag">[ TODAY'S CRAVING • LIVE BATCH ]</span>
+        <h2 class="moment-title">Kesar Pista <br><em>Shrikhand Cupcake</em></h2>
+        <p class="moment-desc">
+          Slow-steeped saffron hung curd mousse over a soft vanilla-cardamom sponge, crowned with roasted Iranian pistachios and pure New Zealand grass-fed butter buttercream.
+        </p>
+
+        <!-- Interactive Layer Deconstruction -->
+        <div class="flavor-layers-accordion">
+          <div class="layer-item">
+            <div class="layer-left">
+              <span class="layer-num">01</span>
+              <span class="layer-title">Kesar Saffron Hung Curd Mousse</span>
+            </div>
+            <span class="layer-tag">Tangy & Velvety</span>
+          </div>
+          <div class="layer-item">
+            <div class="layer-left">
+              <span class="layer-num">02</span>
+              <span class="layer-title">Cardamom Spiced Chiffon Crumb</span>
+            </div>
+            <span class="layer-tag">Aromatic & Tender</span>
+          </div>
+          <div class="layer-item">
+            <div class="layer-left">
+              <span class="layer-num">03</span>
+              <span class="layer-title">Roasted Sicilian Pistachio Praline</span>
+            </div>
+            <span class="layer-tag">Crunch & Richness</span>
+          </div>
+          <div class="layer-item">
+            <div class="layer-left">
+              <span class="layer-num">04</span>
+              <span class="layer-title">Pure NZ Grass-Fed Buttercream</span>
+            </div>
+            <span class="layer-tag">100% Pure Dairy</span>
+          </div>
+        </div>
+
+        <!-- Live Batch Timer -->
+        <div class="batch-status-box">
+          <div class="timer-group">
+            <span class="timer-label">Next Oven Release Countdown</span>
+            <div class="timer-digits" id="liveCountdown">01 : 42 : 18</div>
+          </div>
+          <div class="batch-stock-indicator">
+            <span class="stock-bullet"></span>
+            <span>Limited Fresh Cupcakes Available</span>
+          </div>
+        </div>
+
+        <div class="moment-cta-bar">
+          <span class="moment-price">$7.50</span>
+          <button class="btn-moment-order" onclick="addToBag('item-shrikhand-cupcake')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>Reserve Fresh Cupcake ($7.50)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BESPOKE CAKE ATELIER BUILDER ================= -->
+  <section class="bespoke-section" id="bespoke">
+    <div class="container">
+      <div class="section-header center">
+        <span class="section-tag">[ 02 / BESPOKE CAKE STUDIO ]</span>
+        <h2 class="section-title">Custom Cake <em>Size & Flavor Studio</em></h2>
+        <p class="section-desc">Handcrafted celebration cakes baked fresh in Glen Eden, Auckland. Select your bespoke size and royal flavor.</p>
+      </div>
+
+      <div class="bespoke-builder-box">
+        <div class="bespoke-steps-container">
+          
+          <!-- Step 1: Scale & Tier -->
+          <div class="builder-step-block">
+            <div class="step-header">
+              <span class="step-badge">1</span>
+              <span class="step-title">Select Cake Size</span>
+            </div>
+            <div class="option-pill-group" id="tierSelector">
+              <button class="option-btn selected" data-tier="5-inch" data-price="75" data-serves="4 - 6 Guests">5 Inch ($75)</button>
+              <button class="option-btn" data-tier="6-inch" data-price="95" data-serves="8 - 10 Guests">6 Inch ($95)</button>
+              <button class="option-btn" data-tier="7-inch" data-price="115" data-serves="12 - 15 Guests">7 Inch ($115)</button>
+              <button class="option-btn" data-tier="9-inch" data-price="165" data-serves="20 - 25 Guests">9 Inch ($165)</button>
+              <button class="option-btn" data-tier="12-inch" data-price="230" data-serves="35 - 40 Guests">11/12 Inch ($230)</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Flavor Symphony -->
+          <div class="builder-step-block">
+            <div class="step-header">
+              <span class="step-badge">2</span>
+              <span class="step-title">Select Signature Flavor</span>
+            </div>
+            <div class="option-pill-group" id="flavorSelector">
+              <button class="option-btn selected" data-flavor="rasmalai" data-flavor-name="Rasmalai Cake (Kesar Milk & Pistachio)" data-base-prices='{"5-inch":75,"6-inch":95,"7-inch":115,"9-inch":165,"12-inch":230}'>Rasmalai Cake ⭐</button>
+              <button class="option-btn" data-flavor="gulab-jamun" data-flavor-name="Gulab Jamun Cake (Mawa Cream & Rose)" data-base-prices='{"5-inch":70,"6-inch":85,"7-inch":110,"9-inch":160,"12-inch":220}'>Gulab Jamun Cake ⭐</button>
+              <button class="option-btn" data-flavor="shrikhand" data-flavor-name="Kesar Pista Shrikhand Cake" data-base-prices='{"5-inch":80,"6-inch":100,"7-inch":120,"9-inch":170,"12-inch":240}'>Kesar Pista Shrikhand</button>
+              <button class="option-btn" data-flavor="masala-chai" data-flavor-name="Masala Chai Cake (Spiced Infusion)" data-base-prices='{"5-inch":65,"6-inch":80,"7-inch":100,"9-inch":145,"12-inch":200}'>Masala Chai Cake</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Artisanal Finish -->
+          <div class="builder-step-block">
+            <div class="step-header">
+              <span class="step-badge">3</span>
+              <span class="step-title">Artisanal Garnish & Finish</span>
+            </div>
+            <div class="option-pill-group" id="finishSelector">
+              <button class="option-btn selected" data-finish="gold-leaf" data-finish-name="24k Edible Gold Leaf & Rose Petals">24k Pure Gold Leaf & Rose Petals</button>
+              <button class="option-btn" data-finish="pistachio-crush" data-finish-name="Roasted Pistachio & Almond Border">Roasted Pistachio & Almond Border</button>
+              <button class="option-btn" data-finish="silver-piping" data-finish-name="Hand-Piped Cardamom Rosettes">Hand-Piped Rosettes</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Live Bespoke Specification Summary -->
+        <div class="bespoke-preview-panel">
+          <div>
+            <div class="preview-tag">[ ATELIER SPECIFICATION SHEET ]</div>
+            <h3 class="preview-cake-title" id="bespokeTitlePreview">5 Inch Rasmalai Cake</h3>
+
+            <ul class="spec-list">
+              <li class="spec-item">
+                <span class="spec-key">Cake Size:</span>
+                <span class="spec-val" id="specTier">5 Inch ($75)</span>
+              </li>
+              <li class="spec-item">
+                <span class="spec-key">Estimated Servings:</span>
+                <span class="spec-val" id="specServes">4 - 6 Guests</span>
+              </li>
+              <li class="spec-item">
+                <span class="spec-key">Flavor:</span>
+                <span class="spec-val" id="specFlavor">Rasmalai Cake (Kesar Milk & Pistachio)</span>
+              </li>
+              <li class="spec-item">
+                <span class="spec-key">Garnish:</span>
+                <span class="spec-val" id="specFinish">24k Edible Gold Leaf & Rose Petals</span>
+              </li>
+              <li class="spec-item">
+                <span class="spec-key">Dietary:</span>
+                <span class="spec-val">100% Eggless Vegetarian</span>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="preview-estimate-row">
+              <span class="estimate-label">Total Price</span>
+              <span class="estimate-price" id="bespokeEstimatePrice">$75</span>
+            </div>
+            <button class="btn-book-consultation" id="bookBespokeBtn">
+              <span>Book Atelier Consultation</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BRAND STORY: THE ATELIER SPREAD ================= -->
+  <section class="story-section" id="story">
+    <div class="container story-editorial-layout">
+      
+      <div class="story-visual-stack">
+        <div class="story-primary-frame">
+          <img src="assets/images/artisan_pastry_chef.jpg" alt="Master Pâtissier at The Gulabi Baker Atelier" class="story-primary-img">
+        </div>
+        <div class="story-stamp-badge">
+          <div class="stamp-inner">
+            <span>ATELIER GULABI</span><br>
+            <span>★ ESTD. 2022 ★</span><br>
+            <span>HAUTE ÉDITION</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-text-stack">
+        <span class="section-tag">[ 03 / THE STORY BEHIND THE BRAND ]</span>
+        <blockquote class="story-quote">
+          “We treat every bake as a love letter penned in Damask rosewater, Iranian saffron, and pure New Zealand pasture-fed butter.”
+        </blockquote>
+        
+        <p class="story-p">
+          <strong>The Gulabi Baker</strong> was born from an obsession in Auckland: uniting the precision of luxury artisanal bakehouse craft with the royal botanical heritage of the East.
+        </p>
+        <p class="story-p">
+          Rooted in our Glen Eden bakehouse in West Auckland, we source organic Damask roses harvested at first dawn in Kannauj, single-harvest saffron threads from Khorasan, and stone-ground emerald pistachios, folded into rich New Zealand grass-fed butter. Every sponge is rested for 24 hours to achieve sublime tenderness, and every cream is cold-steeped to preserve its delicate floral aromatic oils.
+        </p>
+
+        <!-- Craftsmanship Metrics Grid -->
+        <div class="craft-metrics-grid">
+          <div class="craft-card">
+            <div class="craft-num">100%</div>
+            <div class="craft-title">Pure NZ Grass-Fed Butter</div>
+            <div class="craft-desc">Uncompromised richness from lush New Zealand pastures.</div>
+          </div>
+          <div class="craft-card">
+            <div class="craft-num">48h</div>
+            <div class="craft-title">Cold Infusion</div>
+            <div class="craft-desc">Botanicals gently steeped to capture fleeting essential aromatics.</div>
+          </div>
+          <div class="craft-card">
+            <div class="craft-num">24k</div>
+            <div class="craft-title">Pure Gold Leaf</div>
+            <div class="craft-desc">Delicately placed by hand with jewelers' tweezers.</div>
+          </div>
+        </div>
+
+        <div class="story-signature-row">
+          <div>
+            <div class="signature-title">Ananya Mehrotra</div>
+            <div class="signature-role">Founder & Master Artisan Baker</div>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 1.8rem; color: var(--rose-primary); font-style: italic;">
+            Gulabi Baker
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PRESS & RECOGNITION ================= -->
+  <section class="press-section">
+    <div class="container">
+      <div class="press-grid">
+        <div class="press-card">
+          <div class="press-stars">★★★★★</div>
+          <p class="press-quote">“A breathtaking triumph of texture and scent. The Grand Ispahan cake is pure couture on a plate.”</p>
+          <div class="press-source">CUISINE MAGAZINE NZ • GASTRONOMY EDIT</div>
+        </div>
+        <div class="press-card">
+          <div class="press-stars">★★★★★</div>
+          <p class="press-quote">“The most aesthetically refined bakehouse in modern New Zealand. Unsurpassed botanical balance.”</p>
+          <div class="press-source">NZ HERALD VIVA • DESIGN & DESSERT EDIT</div>
+        </div>
+        <div class="press-card">
+          <div class="press-stars">★★★★★</div>
+          <p class="press-quote">“Their saffron cloud mousse redefined what luxury fusion bakehouse craft can achieve.”</p>
+          <div class="press-source">DENIZEN AUCKLAND • FINE BAKEHOUSE 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        
+        <div class="footer-brand-col">
+          <span class="brand-title">THE GULABI BAKER</span>
+          <span class="brand-subtitle">HAUTE BAKEHOUSE • GLEN EDEN, AUCKLAND</span>
+          <p class="footer-bio">
+            An artisanal dessert bakehouse celebrating botanical elegance, craft technique, and royal heritage confections.
+          </p>
+          <ul class="footer-atelier-list">
+            <li>✦ Glen Eden Bakehouse: Glen Eden, Auckland, New Zealand</li>
+            <li>✦ Auckland Chilled Courier: Same-Day Across Greater Auckland</li>
+            <li>✦ Nationwide Express: North & South Island Chilled Delivery</li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Creations</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#menu" class="footer-nav-link">Haute Entremets</a></li>
+            <li><a href="#menu" class="footer-nav-link">Tarts & Petits Gâteaux</a></li>
+            <li><a href="#menu" class="footer-nav-link">Ispahan Macarons</a></li>
+            <li><a href="#menu" class="footer-nav-link">Couture Cupcakes</a></li>
+            <li><a href="#menu" class="footer-nav-link">Gifting Velvet Coffrets</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Atelier</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#story" class="footer-nav-link">Our Botanical Philosophy</a></li>
+            <li><a href="#bespoke" class="footer-nav-link">Bespoke Wedding Studio</a></li>
+            <li><a href="#moment" class="footer-nav-link">Live Oven Batch Tracker</a></li>
+            <li><a href="#" class="footer-nav-link">Corporate Gifting Concierge</a></li>
+            <li><a href="#" class="footer-nav-link">Care & Serving Guide</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">The Atelier Gazette</h4>
+          <div class="newsletter-box">
+            <p class="newsletter-desc">Receive secret seasonal flavor drops and invitations to private tasting salons.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); subscribeNewsletter();">
+              <input type="email" placeholder="Your email address" required class="newsletter-input" id="newsletterInput">
+              <button type="submit" class="newsletter-btn">Join</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 THE GULABI BAKER. ALL RIGHTS RESERVED.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Atelier Service</a>
+          <a href="#">Dietary Disclosures</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= SLIDE-OVER LUXURY SHOPPING BAG DRAWER ================= -->
+  <div class="drawer-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Bag">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Your Atelier Bag (<span id="drawerCount">0</span>)</h3>
+      <button class="drawer-close-btn" id="closeDrawerBtn" aria-label="Close Bag">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-items-list" id="drawerItemsList">
+      <!-- Items dynamically populated via app.js -->
+    </div>
+
+    <div class="drawer-footer">
+      <div class="gift-options-row">
+        <label class="gift-checkbox-label">
+          <input type="checkbox" id="giftBoxToggle" onchange="toggleGiftMessage()">
+          <span>Include Complimentary Velvet Gift Ribbon & Wax Seal</span>
+        </label>
+        <input type="text" id="giftMessageInput" class="gift-message-input" placeholder="Write a gold-embossed message for the recipient...">
+      </div>
+
+      <div class="drawer-summary-row">
+        <span>Bakehouse Location:</span>
+        <strong id="drawerCity">Glen Eden, Auckland (Same-Day)</strong>
+      </div>
+
+      <div class="drawer-summary-row">
+        <span>Packaging & Chilled Delivery:</span>
+        <span style="color: #2E7D32; font-weight: 600;">COMPLIMENTARY</span>
+      </div>
+
+      <div class="drawer-total-row">
+        <span class="drawer-total-label">Subtotal</span>
+        <span class="drawer-total-val" id="drawerTotal">₹ 0</span>
+      </div>
+
+      <button class="btn-checkout" id="checkoutBtn" onclick="triggerCheckout()">
+        <span>Proceed to Atelier Checkout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= TASTE PROFILE & INGREDIENT QUICK VIEW MODAL ================= -->
+  <div class="taste-modal-backdrop" id="tasteModalBackdrop">
+    <div class="taste-modal-card" id="tasteModalCard">
+      <button class="modal-close-btn" onclick="closeTasteModal()" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <div class="modal-media">
+        <img src="assets/images/hero_gulabi_cake.jpg" alt="Modal Product Image" class="modal-img" id="modalProductImg">
+      </div>
+
+      <div class="modal-content-area">
+        <div>
+          <span class="modal-tag" id="modalTag">SIGNATURE COLLECTION</span>
+          <h3 class="modal-title" id="modalTitle">The Grand Ispahan Rose</h3>
+          <p class="modal-desc" id="modalDesc">Detailed flavor architecture.</p>
+
+          <!-- Cake Size Selector (For Celebration Cakes) -->
+          <div class="modal-size-box" id="modalSizeSection">
+            <span class="modal-size-label">Select Cake Size:</span>
+            <div class="modal-size-pills" id="modalSizePills">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+
+          <!-- Sensory Profile Bars -->
+          <div class="sensory-bars-box">
+            <div class="meter-row">
+              <span class="meter-name">Floral Intensity</span>
+              <div class="meter-track"><div class="meter-fill" id="meterFloral" style="width: 85%;"></div></div>
+              <span class="meter-val" id="valFloral">85%</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-name">Sweetness</span>
+              <div class="meter-track"><div class="meter-fill" id="meterSweet" style="width: 45%;"></div></div>
+              <span class="meter-val" id="valSweet">45%</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-name">Richness</span>
+              <div class="meter-track"><div class="meter-fill" id="meterRich" style="width: 75%;"></div></div>
+              <span class="meter-val" id="valRich">75%</span>
+            </div>
+          </div>
+
+          <div class="chef-pairing-note" id="modalPairing">
+            ✦ Chef's Pairing: Silver Needle White Tea or Vintage Rosé Champagne.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div>
+            <div style="font-size: 0.68rem; letter-spacing: 0.12em; color: var(--text-muted); text-transform: uppercase;">Atelier Price</div>
+            <div style="font-family: var(--font-display); font-size: 1.6rem; color: var(--burgundy-dark); font-weight: 600;" id="modalPrice">₹ 3,450</div>
+          </div>
+          <button class="btn-primary" id="modalAddBtn" style="padding: 0.9rem 1.8rem;">
+            <span>Add To Bag</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BESPOKE CONSULTATION INQUIRY MODAL ================= -->
+  <div class="taste-modal-backdrop" id="bespokeModalBackdrop">
+    <div class="taste-modal-card" style="max-width: 600px; grid-template-columns: 1fr; padding: 2.5rem;">
+      <button class="modal-close-btn" onclick="closeBespokeModal()" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <div>
+        <span class="section-tag">[ ATELIER RESERVATION ]</span>
+        <h3 class="section-title" style="font-size: 2rem; margin-bottom: 0.5rem;">Consultation <em>Requested</em></h3>
+        <p class="section-desc" style="font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Our Concierge will contact you within 4 hours to confirm your custom cake tasting box and finalize your bespoke centerpiece design.
+        </p>
+
+        <div style="background: rgba(243, 236, 226, 0.6); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; font-size: 0.85rem; border: var(--border-fine);">
+          <div style="font-weight: 600; color: var(--burgundy-dark); margin-bottom: 0.35rem;" id="bespokeInquirySummary">Single Atelier Tier • Damask Rose & Pistachio</div>
+          <div style="color: var(--text-muted);">Estimated Price: <strong id="bespokeInquiryPrice" style="color: var(--burgundy-dark);">₹ 3,450</strong></div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); submitBespokeForm();" style="display: flex; flex-direction: column; gap: 1rem;">
+          <input type="text" placeholder="Your Full Name" required style="padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          <input type="tel" placeholder="Mobile / WhatsApp Number" required style="padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          <input type="date" placeholder="Event Date" required style="padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          <button type="submit" class="btn-primary" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
+            <span>Confirm Consultation Booking</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ATELIER AUTH & ACCOUNT MODAL ================= -->
+  <div class="taste-modal-backdrop" id="authModalBackdrop">
+    <div class="taste-modal-card" style="max-width: 580px; grid-template-columns: 1fr; padding: 2.5rem; position: relative;">
+      <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <!-- Auth State 1: Guest (Sign In / Register Tabs) -->
+      <div id="authGuestView">
+        <span class="section-tag">[ ATELIER PRIVILEGE CLUB ]</span>
+        <h3 class="section-title" style="font-size: 2rem; margin-bottom: 0.35rem;" id="authModalTitle">Welcome to <em>The Atelier</em></h3>
+        <p class="section-desc" style="font-size: 0.85rem; margin-bottom: 1.5rem;" id="authModalSub">
+          Sign in or create an atelier membership to unlock exclusive secret tasting reservations and order tracking.
+        </p>
+
+        <!-- Auth Tabs -->
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: var(--border-fine); padding-bottom: 0.75rem;">
+          <button class="category-pill active" id="tabSignIn" style="padding: 0.5rem 1.25rem; font-size: 0.75rem;" onclick="switchAuthTab('login')">Sign In</button>
+          <button class="category-pill" id="tabSignUp" style="padding: 0.5rem 1.25rem; font-size: 0.75rem;" onclick="switchAuthTab('signup')">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="event.preventDefault(); handleCustomerLogin();" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Email Address</label>
+            <input type="email" id="loginEmail" placeholder="your.name@domain.com" required style="width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required style="width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          </div>
+          <button type="submit" class="btn-primary" id="loginSubmitBtn" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
+            <span>Sign In to Atelier</span>
+          </button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" onsubmit="event.preventDefault(); handleCustomerSignup();" style="display: none; flex-direction: column; gap: 0.85rem;">
+          <div>
+            <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Full Name</label>
+            <input type="text" id="signupName" placeholder="e.g. Princess Ananya" required style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Email Address</label>
+            <input type="email" id="signupEmail" placeholder="your.name@domain.com" required style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div>
+              <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Password</label>
+              <input type="password" id="signupPassword" placeholder="Min. 6 characters" minlength="6" required style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+            </div>
+            <div>
+              <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Phone</label>
+              <input type="tel" id="signupPhone" placeholder="+91 98765 43210" style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy-dark); font-weight: 600; display: block; margin-bottom: 0.3rem;">Default Delivery Address</label>
+            <input type="text" id="signupAddress" placeholder="Suite, Street, City" style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: var(--border-fine); font-family: var(--font-sans); outline: none;">
+          </div>
+          <button type="submit" class="btn-primary" id="signupSubmitBtn" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
+            <span>Create Atelier Membership</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Auth State 2: Logged In Member Profile & Orders -->
+      <div id="authMemberView" style="display: none;">
+        <span class="section-tag">[ ATELIER MEMBER PROFILE ]</span>
+        <h3 class="section-title" style="font-size: 1.9rem; margin-bottom: 0.35rem;">Bonjour, <em id="memberNameDisplay">Member</em></h3>
+        <p class="section-desc" style="font-size: 0.85rem; margin-bottom: 1.5rem;" id="memberEmailDisplay">member@gulabibaker.com</p>
+
+        <div style="background: rgba(243, 236, 226, 0.5); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; border: var(--border-fine);">
+          <div style="font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose-deep); font-weight: 600; margin-bottom: 0.5rem;">Atelier Order History</div>
+          <div id="memberOrdersList" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem;">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Fetching your orders from PostgreSQL...</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn-secondary" style="flex: 1; justify-content: center;" onclick="handleCustomerLogout()">Sign Out</button>
+          <button class="btn-primary" style="flex: 1; justify-content: center;" onclick="closeAuthModal()">Continue Browsing</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= TOAST CONTAINER ================= -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ================= MOBILE STICKY BOTTOM APP BAR ================= -->
+  <nav class="mobile-app-bar" aria-label="Mobile Navigation">
+    <a href="#menu" class="mobile-app-btn active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>Creations</span>
+    </a>
+    <a href="#moment" class="mobile-app-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Craving</span>
+    </a>
+    <a href="#bespoke" class="mobile-app-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Bespoke</span>
+    </a>
+    <button class="mobile-app-btn" onclick="openBagDrawer()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Bag (<span id="mobileBagCount">0</span>)</span>
+    </button>
+  </nav>
+
+  <!-- ================= APPLICATION SCRIPTS ================= -->
+  <script src="scripts/app.js"></script>
+</body>
+</html>
