@@ -588,7 +588,7 @@ function initBespokeCustomizer() {
 
   let currentBespoke = {
     size: '5-inch',
-    sizeName: '5 Inch ($70)',
+    sizeName: '5 Inch',
     serves: '4 - 6 Guests',
     price: 70,
     flavor: 'gulab-jamun',
@@ -645,7 +645,7 @@ function initBespokeCustomizer() {
     const estPrice = document.getElementById('bespokeEstimatePrice');
     const titlePreview = document.getElementById('bespokeTitlePreview');
 
-    if (specTier) specTier.textContent = `${currentBespoke.size.replace('-', ' ')} ($${currentBespoke.price})`;
+    if (specTier) specTier.textContent = `${currentBespoke.size.replace('-', ' ')}`;
     if (specServes) specServes.textContent = currentBespoke.serves;
     if (specFlavor) specFlavor.textContent = currentBespoke.flavorName;
     if (specFinish) specFinish.textContent = currentBespoke.finishName;
