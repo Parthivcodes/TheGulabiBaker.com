@@ -933,8 +933,9 @@ function openTasteModal(productId) {
 
     sizePillsContainer.innerHTML = sizeKeys.map(sz => `
       <button class="modal-size-pill ${sz === activeModalSelectedSize ? 'active' : ''}" 
+              data-size="${sz}"
               onclick="selectModalSize('${sz}', ${product.sizes[sz]})">
-        ${sz} ($${product.sizes[sz]})
+        ${sz.charAt(0).toUpperCase() + sz.slice(1)}
       </button>
     `).join('');
 
@@ -980,7 +981,7 @@ function selectModalSize(size, price) {
 
   const pills = document.querySelectorAll('.modal-size-pill');
   pills.forEach(pill => {
-    if (pill.textContent.includes(size)) {
+    if (pill.getAttribute('data-size') === size) {
       pill.classList.add('active');
     } else {
       pill.classList.remove('active');
