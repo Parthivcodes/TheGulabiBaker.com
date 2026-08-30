@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gulabi Baker — Admin Management Suite</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            rose: {
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+            },
+            amber: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google GSI CDN -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0c0a09;
+      color: #f5f5f4;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #1c1917;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #44403c;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row antialiased selection:bg-rose-500 selection:text-white">
+
+  <!-- ── AUTH LOGIN OVERLAY ── -->
+  <div id="login-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950 p-4">
+    <div class="relative w-full max-w-md overflow-hidden rounded-3xl bg-stone-900/95 border border-stone-800 p-8 shadow-2xl backdrop-blur-xl">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-bold uppercase tracking-widest mb-3">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> The Gulabi Baker Portal
+        </div>
+        <h1 class="font-serif text-3xl font-bold text-stone-50 tracking-tight">Owner & Admin Access</h1>
+        <p class="text-xs text-stone-400 mt-1.5 leading-relaxed">
+          Full live control over bakery products, special offers, menu categories, customer orders, and site banner announcements.
+        </p>
+      </div>
+
+      <div id="login-error" class="hidden mb-5 rounded-2xl bg-red-500/10 border border-red-500/20 p-3.5 text-xs text-red-400 font-medium flex items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+        <span id="login-error-msg">Invalid credentials.</span>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="admin-email">Admin Email</label>
+          <input required id="admin-email" type="email" placeholder="owner@thegulabibaker.com" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-3 text-sm text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="admin-password">Password</label>
+          <input required id="admin-password" type="password" placeholder="••••••••" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-3 text-sm text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+        </div>
+
+        <button type="submit" id="login-btn" class="w-full py-3.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-sm transition-all shadow-lg shadow-rose-950/50 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Enter Management Suite
+        </button>
+      </form>
+
+      <div class="flex items-center gap-3 my-6">
+        <div class="flex-1 h-px bg-stone-800"></div>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-500">Or Quick Auth</span>
+        <div class="flex-1 h-px bg-stone-800"></div>
+      </div>
+
+      <div class="text-center">
+        <button type="button" id="demo-login-btn" class="w-full py-2.5 rounded-2xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-2">
+          ⚡ 1-Click Instant Demo Login (Offline Mode)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SIDEBAR NAVIGATION ── -->
+  <aside class="w-full md:w-72 bg-stone-900/90 border-b md:border-b-0 md:border-r border-stone-800 p-6 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="mb-8">
+        <div class="flex items-center gap-2.5">
+          <span class="h-9 w-9 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white font-serif font-bold text-lg shadow-md shadow-rose-900/30">G</span>
+          <div>
+            <h2 class="font-serif text-xl font-bold tracking-tight text-stone-50 leading-none">Gulabi Baker<span class="text-rose-500">.</span></h2>
+            <p class="text-[11px] text-stone-400 font-medium mt-1">Master Control Room</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="space-y-1.5">
+        <button onclick="switchTab('products')" id="tab-btn-products" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer bg-rose-600 text-white shadow-lg shadow-rose-950/40">
+          <div class="flex items-center gap-3"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Products & Treats</div>
+          <span id="badge-prod-count" class="text-xs px-2 py-0.5 rounded-full bg-stone-950/40 font-mono">0</span>
+        </button>
+
+        <button onclick="switchTab('categories')" id="tab-btn-categories" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer text-stone-400 hover:bg-stone-800 hover:text-stone-100">
+          <div class="flex items-center gap-3"><i data-lucide="layers" class="w-4 h-4"></i> Menu Categories</div>
+          <span id="badge-cat-count" class="text-xs px-2 py-0.5 rounded-full bg-stone-950/40 font-mono">0</span>
+        </button>
+
+        <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer text-stone-400 hover:bg-stone-800 hover:text-stone-100">
+          <div class="flex items-center gap-3"><i data-lucide="file-text" class="w-4 h-4"></i> Orders & Kitchen</div>
+          <span id="badge-orders-active" class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500 text-stone-950 font-bold hidden">0</span>
+        </button>
+
+        <button onclick="switchTab('customers')" id="tab-btn-customers" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer text-stone-400 hover:bg-stone-800 hover:text-stone-100">
+          <div class="flex items-center gap-3"><i data-lucide="users" class="w-4 h-4"></i> Customer Directory</div>
+          <span id="badge-cust-count" class="text-xs px-2 py-0.5 rounded-full bg-stone-950/40 font-mono">0</span>
+        </button>
+
+        <button onclick="switchTab('settings')" id="tab-btn-settings" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer text-stone-400 hover:bg-stone-800 hover:text-stone-100">
+          <div class="flex items-center gap-3"><i data-lucide="sliders" class="w-4 h-4"></i> Storefront Settings</div>
+          <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="mt-8 border-t border-stone-800 pt-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div id="user-avatar" class="w-10 h-10 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center font-bold text-rose-300 text-sm uppercase shrink-0">AD</div>
+        <div class="min-w-0">
+          <p id="user-name" class="text-sm font-bold text-stone-100 truncate">Store Owner</p>
+          <p id="user-email" class="text-[11px] text-stone-500 truncate">owner@thegulabibaker.com</p>
+        </div>
+      </div>
+      <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-2xl border border-stone-800 text-xs font-bold text-red-400 hover:bg-red-500/10 hover:border-red-500/30 transition-all cursor-pointer">
+        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Log Out Portal
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN DASHBOARD AREA ── -->
+  <section class="flex-1 p-6 md:p-10 max-w-7xl overflow-y-auto custom-scroll">
+    
+    <!-- Top KPI Metrics Bar -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="p-4 rounded-3xl bg-stone-900/60 border border-stone-800 flex items-center gap-4">
+        <div class="p-3 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+          <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-stone-500">Gross Sales</p>
+          <p id="kpi-sales" class="text-xl font-extrabold text-stone-100 font-mono mt-0.5">$0</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-3xl bg-stone-900/60 border border-stone-800 flex items-center gap-4">
+        <div class="p-3 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-stone-500">Catalog Items</p>
+          <p id="kpi-products" class="text-xl font-extrabold text-stone-100 font-mono mt-0.5">0</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-3xl bg-stone-900/60 border border-stone-800 flex items-center gap-4">
+        <div class="p-3 rounded-2xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <i data-lucide="file-text" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-stone-500">Active Orders</p>
+          <p id="kpi-orders" class="text-xl font-extrabold text-stone-100 font-mono mt-0.5">0</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-3xl bg-stone-900/60 border border-stone-800 flex items-center gap-4">
+        <div class="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <i data-lucide="users" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-stone-500">Registered Users</p>
+          <p id="kpi-customers" class="text-xl font-extrabold text-stone-100 font-mono mt-0.5">0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Title & Global Action Bar -->
+    <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 id="page-title" class="font-serif text-3xl font-bold text-stone-50">Products Management</h1>
+        <p id="page-desc" class="text-xs text-stone-400 mt-1">Add new pastry creations, configure discount sales %, tags, and manage live menu availability.</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="btn-add-product" onclick="openAddProductModal()" class="px-5 py-3 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-xs flex items-center gap-2 shadow-lg shadow-rose-950/40 transition-all active:scale-98 cursor-pointer">
+          <i data-lucide="plus" class="w-4 h-4"></i> Add New Product
+        </button>
+
+        <button id="btn-add-category" onclick="openCategoryModal()" class="hidden px-5 py-3 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-xs flex items-center gap-2 shadow-lg shadow-rose-950/40 transition-all active:scale-98 cursor-pointer">
+          <i data-lucide="plus" class="w-4 h-4"></i> Create Category
+        </button>
+
+        <button onclick="renderAll()" title="Refresh" class="p-3 rounded-full bg-stone-900 border border-stone-800 text-stone-400 hover:text-stone-100 hover:bg-stone-800 transition-all cursor-pointer">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── TAB: PRODUCTS ── -->
+    <div id="tab-products" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row items-center gap-4 bg-stone-900/50 p-4 rounded-3xl border border-stone-800">
+        <div class="relative flex-1 w-full">
+          <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-stone-500"></i>
+          <input type="text" id="product-search" oninput="renderProducts()" placeholder="Search products by name, tag, ingredients..." class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-stone-950/60 border border-stone-800 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40 placeholder:text-stone-600" />
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <span class="text-xs font-bold text-stone-500 uppercase shrink-0">Category:</span>
+          <select id="product-category-filter" onchange="renderProducts()" class="w-full sm:w-auto px-4 py-2.5 rounded-2xl bg-stone-950/60 border border-stone-800 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40 cursor-pointer">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="products-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- ── TAB: CATEGORIES ── -->
+    <div id="tab-categories" class="tab-content hidden space-y-6">
+      <div class="rounded-3xl bg-stone-900/80 border border-stone-800 overflow-hidden shadow-lg">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-stone-950/60 border-b border-stone-800 text-[11px] uppercase tracking-wider text-stone-400 font-bold">
+              <th class="p-4 sm:p-5">Category Name</th>
+              <th class="p-4 sm:p-5">Description</th>
+              <th class="p-4 sm:p-5">Associated Items</th>
+              <th class="p-4 sm:p-5 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="categories-table-body" class="divide-y divide-stone-800/60 text-stone-200">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TAB: ORDERS ── -->
+    <div id="tab-orders" class="tab-content hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-stone-900/50 p-4 rounded-3xl border border-stone-800">
+        <div class="flex flex-wrap gap-2" id="order-status-tabs">
+          <button onclick="setOrderFilter('all')" class="order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-rose-600 text-white">all</button>
+          <button onclick="setOrderFilter('pending')" class="order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-stone-800/80 text-stone-400">pending</button>
+          <button onclick="setOrderFilter('preparing')" class="order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-stone-800/80 text-stone-400">preparing</button>
+          <button onclick="setOrderFilter('delivered')" class="order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-stone-800/80 text-stone-400">delivered</button>
+          <button onclick="setOrderFilter('cancelled')" class="order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-stone-800/80 text-stone-400">cancelled</button>
+        </div>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+        <div class="rounded-3xl bg-stone-900/80 border border-stone-800 overflow-hidden shadow-lg">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-stone-950/60 border-b border-stone-800 text-[11px] uppercase tracking-wider text-stone-400 font-bold">
+                <th class="p-4 sm:p-5">Order #</th>
+                <th class="p-4 sm:p-5">Customer Profile</th>
+                <th class="p-4 sm:p-5">Total ($)</th>
+                <th class="p-4 sm:p-5">Kitchen State</th>
+                <th class="p-4 sm:p-5 text-right">Details</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body" class="divide-y divide-stone-800/60 text-stone-200">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="order-inspector-panel">
+          <div class="rounded-3xl bg-stone-900/30 border border-dashed border-stone-800 p-8 text-center text-stone-500">
+            <i data-lucide="file-text" class="w-9 h-9 mx-auto text-stone-600 mb-3"></i>
+            <p class="text-xs font-semibold leading-relaxed">Select an order row from the table to inspect full client details, kitchen instructions, and change delivery status.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: CUSTOMERS ── -->
+    <div id="tab-customers" class="tab-content hidden space-y-6">
+      <div class="rounded-3xl bg-stone-900/80 border border-stone-800 overflow-hidden shadow-lg">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-stone-950/60 border-b border-stone-800 text-[11px] uppercase tracking-wider text-stone-400 font-bold">
+              <th class="p-4 sm:p-5">Customer Name</th>
+              <th class="p-4 sm:p-5">Email & Phone</th>
+              <th class="p-4 sm:p-5">Delivery Address</th>
+              <th class="p-4 sm:p-5">Registered Since</th>
+            </tr>
+          </thead>
+          <tbody id="customers-table-body" class="divide-y divide-stone-800/60 text-stone-200">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TAB: STOREFRONT SETTINGS ── -->
+    <div id="tab-settings" class="tab-content hidden space-y-6">
+      <form id="settings-form" onsubmit="handleSaveSettings(event)" class="space-y-6">
+        <div id="settings-toast" class="hidden p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2">
+          <i data-lucide="check-circle" class="w-4 h-4"></i> Storefront settings successfully saved & synced across the bakery!
+        </div>
+
+        <!-- Announcement Banner Controls -->
+        <div class="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-stone-800 pb-4">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-stone-100 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Header Announcement Banner
+              </h3>
+              <p class="text-xs text-stone-400 mt-0.5">Customize the top promotional message displayed to all website visitors.</p>
+            </div>
+            <input type="checkbox" id="set-announcement-enabled" class="w-5 h-5 rounded text-rose-600 accent-rose-600 cursor-pointer" />
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Banner Announcement Text</label>
+              <input type="text" id="set-announcement-text" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Highlight Tag / Badge</label>
+              <input type="text" id="set-announcement-badge" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Store Status & Headline Controls -->
+        <div class="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4">
+          <h3 class="font-serif text-lg font-bold text-stone-100 flex items-center gap-2 border-b border-stone-800 pb-4">
+            <i data-lucide="store" class="w-4 h-4 text-rose-400"></i> Bakery Operational Status & Hero Section
+          </h3>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Store Operational State</label>
+              <select id="set-store-status" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40 cursor-pointer">
+                <option value="open">🟢 Open (Taking Real-time Orders)</option>
+                <option value="busy">🟡 High Rush (Pre-orders Only)</option>
+                <option value="closed">🔴 Closed for the Day (Baking Fresh)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Store Notice / Closed Message</label>
+              <input type="text" id="set-closed-msg" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Hero Section Headline</label>
+              <input type="text" id="set-hero-headline" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Hero Subtitle Tagline</label>
+              <input type="text" id="set-hero-sub" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Fees & Contact Info -->
+        <div class="p-6 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4">
+          <h3 class="font-serif text-lg font-bold text-stone-100 flex items-center gap-2 border-b border-stone-800 pb-4">
+            <i data-lucide="truck" class="w-4 h-4 text-emerald-400"></i> Delivery Rates & Bakery Contacts
+          </h3>
+
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Base Delivery Fee ($)</label>
+              <input type="number" id="set-delivery-fee" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 font-mono outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Free Delivery Threshold ($)</label>
+              <input type="number" id="set-free-threshold" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 font-mono outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Bakery Phone</label>
+              <input type="text" id="set-phone" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Support Email</label>
+              <input type="email" id="set-email" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Bakery Physical Address</label>
+              <input type="text" id="set-address" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5">Opening Hours</label>
+              <input type="text" id="set-hours" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-xs transition-all shadow-lg shadow-rose-950/40 active:scale-98 cursor-pointer flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i> Save All Storefront Changes
+        </button>
+      </form>
+    </div>
+
+  </section>
+
+  <!-- ── MODAL: PRODUCT CREATE / EDIT ── -->
+  <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-xl overflow-hidden rounded-3xl bg-stone-900 border border-stone-800 p-7 shadow-2xl z-50 max-h-[90vh] flex flex-col">
+      <button onclick="closeProductModal()" class="absolute right-5 top-5 p-2 rounded-full hover:bg-stone-800 transition-colors text-stone-400 hover:text-stone-100 cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-5">
+        <h3 id="modal-product-title" class="font-serif text-2xl font-bold text-stone-50">Add New Bakery Creation</h3>
+        <p class="text-xs text-stone-400 mt-1">Configure pricing, discount badges, photos, and stock availability for this menu item.</p>
+      </div>
+
+      <form id="product-form" onsubmit="handleSaveProduct(event)" class="space-y-4 overflow-y-auto pr-2 flex-1 custom-scroll">
+        <input type="hidden" id="prod-id" />
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="prod-name">Product Name <span class="text-rose-500">*</span></label>
+          <input required id="prod-name" type="text" placeholder="e.g. Saffron Rasmalai Cake" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-3 text-sm text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+        </div>
+
+        <!-- Pricing & Discount Math Section -->
+        <div class="p-4 rounded-2xl bg-stone-950/80 border border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <i data-lucide="percent" class="w-3.5 h-3.5"></i> Pricing & Discount Calculator
+            </span>
+            <span id="prod-discount-badge" class="hidden text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0% OFF</span>
+          </div>
+
+          <div class="grid gap-3 grid-cols-2">
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-400 mb-1" for="prod-original-price">Original / Regular Price ($)</label>
+              <input id="prod-original-price" type="number" step="0.01" oninput="calculateDiscountMath('original')" placeholder="e.g. 350" class="w-full rounded-xl border border-stone-800 bg-stone-900 px-3.5 py-2.5 text-sm text-stone-100 outline-none font-mono font-semibold" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-rose-400 mb-1" for="prod-price">Final Selling Price ($) <span class="text-rose-500">*</span></label>
+              <input required id="prod-price" type="number" step="0.01" oninput="calculateDiscountMath('final')" placeholder="e.g. 280" class="w-full rounded-xl border-2 border-rose-500/50 bg-stone-900 px-3.5 py-2.5 text-sm text-stone-100 outline-none font-mono font-bold" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1.5">1-Click Discount Preset:</label>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="applyDiscount(10)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">10% OFF</button>
+              <button type="button" onclick="applyDiscount(15)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">15% OFF</button>
+              <button type="button" onclick="applyDiscount(20)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">20% OFF</button>
+              <button type="button" onclick="applyDiscount(25)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">25% OFF</button>
+              <button type="button" onclick="applyDiscount(30)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">30% OFF</button>
+              <button type="button" onclick="applyDiscount(50)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">50% OFF</button>
+              <button type="button" onclick="applyDiscount(0)" class="text-xs font-semibold px-2 py-1 rounded-lg text-red-400 hover:bg-red-500/10 cursor-pointer">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="prod-tag">Promotional Badge / Tag</label>
+          <input id="prod-tag" type="text" placeholder="e.g. Best seller, Festive Offer" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <button type="button" onclick="setProductTag('Best seller')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full border border-stone-800 bg-stone-950 text-stone-400 hover:text-stone-200">Best seller</button>
+            <button type="button" onclick="setProductTag('Festive Offer')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full border border-stone-800 bg-stone-950 text-stone-400 hover:text-stone-200">Festive Offer</button>
+            <button type="button" onclick="setProductTag('20% OFF')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full border border-stone-800 bg-stone-950 text-stone-400 hover:text-stone-200">20% OFF</button>
+            <button type="button" onclick="setProductTag('New')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full border border-stone-800 bg-stone-950 text-stone-400 hover:text-stone-200">New</button>
+            <button type="button" onclick="setProductTag('Chef Special')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full border border-stone-800 bg-stone-950 text-stone-400 hover:text-stone-200">Chef Special</button>
+          </div>
+        </div>
+
+        <div class="grid gap-4 grid-cols-2">
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="prod-cat-id">Menu Category</label>
+            <select id="prod-cat-id" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40 cursor-pointer">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="prod-image">Image URL / Path</label>
+            <input id="prod-image" type="text" placeholder="/Rasmalai2.0.png or URL" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none font-mono focus:ring-2 focus:ring-rose-500/40" />
+          </div>
+        </div>
+
+        <!-- Image Gallery Presets -->
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1.5">Pick from photo library:</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="setProductImage('/Rasmalai2.0.png')" class="p-1 rounded-xl bg-stone-950 border border-stone-800 text-[10px] text-stone-300 hover:border-rose-500 truncate">Rasmalai Cake</button>
+            <button type="button" onclick="setProductImage('/Gulabjamuncupcake.png')" class="p-1 rounded-xl bg-stone-950 border border-stone-800 text-[10px] text-stone-300 hover:border-rose-500 truncate">Gulab Jamun</button>
+            <button type="button" onclick="setProductImage('/Masalachaicake.png')" class="p-1 rounded-xl bg-stone-950 border border-stone-800 text-[10px] text-stone-300 hover:border-rose-500 truncate">Masala Chai</button>
+            <button type="button" onclick="setProductImage('/bakery-hero.png')" class="p-1 rounded-xl bg-stone-950 border border-stone-800 text-[10px] text-stone-300 hover:border-rose-500 truncate">Bakery Showcase</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="prod-desc">Description</label>
+          <textarea id="prod-desc" rows="3" placeholder="Tell clients about ingredients, cardamom notes, saffron cream..." class="w-full resize-none rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40"></textarea>
+        </div>
+
+        <div class="flex items-center gap-3 bg-stone-950/80 p-3.5 rounded-2xl border border-stone-800">
+          <input type="checkbox" id="prod-available" checked class="w-4 h-4 rounded text-rose-600 accent-rose-600 cursor-pointer" />
+          <label for="prod-available" class="text-xs font-semibold text-stone-200 cursor-pointer select-none">Available in Live Public Catalog (Uncheck if Sold Out)</label>
+        </div>
+
+        <button type="submit" class="w-full mt-4 py-3.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-xs transition-all shadow-lg shadow-rose-950/40 cursor-pointer">
+          Publish Sweet Treat
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODAL: CATEGORY CREATE / EDIT ── -->
+  <div id="category-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-md overflow-hidden rounded-3xl bg-stone-900 border border-stone-800 p-7 shadow-2xl z-50">
+      <button onclick="closeCategoryModal()" class="absolute right-5 top-5 p-2 rounded-full hover:bg-stone-800 transition-colors text-stone-400 hover:text-stone-100 cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-5">
+        <h3 id="modal-category-title" class="font-serif text-2xl font-bold text-stone-50">Create New Category</h3>
+        <p class="text-xs text-stone-400 mt-1">Organize your pastries into easily discoverable menu sections.</p>
+      </div>
+
+      <form id="category-form" onsubmit="handleSaveCategory(event)" class="space-y-4">
+        <input type="hidden" id="cat-id" />
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="cat-name">Category Title <span class="text-rose-500">*</span></label>
+          <input required id="cat-name" type="text" placeholder="e.g. Signature Cakes" class="w-full rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-3 text-sm text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40" />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5" for="cat-desc">Short Description</label>
+          <textarea id="cat-desc" rows="3" placeholder="Describe these collection items..." class="w-full resize-none rounded-xl border border-stone-800 bg-stone-950/60 px-4 py-2.5 text-xs text-stone-100 outline-none focus:ring-2 focus:ring-rose-500/40"></textarea>
+        </div>
+
+        <button type="submit" class="w-full mt-4 py-3.5 rounded-full bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-xs transition-all shadow-lg shadow-rose-950/40 cursor-pointer">
+          Save Category
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── SCRIPT LOGIC ── -->
+  <script>
+    // ── Default State ──
+    const DEFAULT_PRODUCTS = [
+      { id: 1, name: 'Rasmalai Cake', price: 300, original_price: 350, discount_percent: 15, tag: 'Best seller', image_path: '/Rasmalai2.0.png', description: 'Cardamom infused sponge layered with saffron cream and authentic rasmalai rabdi.', category_id: 1, is_available: true },
+      { id: 2, name: 'Masala Chai Cake', price: 280, original_price: 320, discount_percent: 12, tag: 'Chef Special', image_path: '/Masalachaicake.png', description: 'A moist and fragrant cake infused with the warm, aromatic spices of Indian chai.', category_id: 1, is_available: true },
+      { id: 3, name: 'Gulab Jamun Cupcake', price: 250, original_price: 300, discount_percent: 16, tag: 'Festive Offer', image_path: '/Gulabjamuncupcake.png', description: 'A rich and moist cupcake infused with the irresistible flavors of Gulab Jamun.', category_id: 2, is_available: true },
+      { id: 4, name: 'Mango Mawa Tart', price: 420, original_price: 420, discount_percent: 0, tag: 'Seasonal', image_path: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=900&q=85', description: 'Buttery shortcrust pastry, slow-cooked saffron mawa, and sunshine-ripe Alphonso mangoes.', category_id: 3, is_available: true },
+      { id: 5, name: 'Cardamom Buns', price: 160, original_price: 200, discount_percent: 20, tag: 'Morning pick', image_path: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=85', description: 'Twisty, caramelized, buttery dough fragrant with crushed green cardamom.', category_id: 4, is_available: true }
+    ];
+
+    const DEFAULT_CATEGORIES = [
+      { id: 1, name: 'Cakes', description: 'Grand celebration cakes with Indian fusion flavors.' },
+      { id: 2, name: 'Cupcakes', description: 'Bite-sized sweet indulgence.' },
+      { id: 3, name: 'Tarts', description: 'Crisp shortcrust tartlets with mawa fillings.' },
+      { id: 4, name: 'Buns & Pastries', description: 'Fresh morning baked buttery rolls.' }
+    ];
+
+    const DEFAULT_SETTINGS = {
+      announcementEnabled: true,
+      announcementText: '✨ Festive Season Special: Enjoy 20% OFF on all signature Rasmalai & Fusion cakes!',
+      announcementBadge: 'LIMITED TIME',
+      storeStatus: 'open',
+      closedMessage: 'We are currently baking fresh batches. Taking pre-orders for tomorrow!',
+      heroHeadline: 'Artisanal Indian Fusion Bakery',
+      heroSubheadline: 'Handcrafted pastries, saffron-infused cakes, and artisanal sweets made fresh daily.',
+      deliveryFee: 50,
+      freeDeliveryThreshold: 500,
+      bakeryPhone: '+91 98765 43210',
+      bakeryEmail: 'orders@thegulabibaker.com',
+      bakeryAddress: 'Shop 14, Heritage Lane, Gulabi Nagar, Ahmedabad, Gujarat',
+      bakeryHours: 'Mon – Sun: 9:00 AM – 10:00 PM'
+    };
+
+    let products = JSON.parse(localStorage.getItem('gulabi_products')) || DEFAULT_PRODUCTS;
+    let categories = JSON.parse(localStorage.getItem('gulabi_categories')) || DEFAULT_CATEGORIES;
+    let orders = JSON.parse(localStorage.getItem('gulabi_orders')) || [
+      { id: 101, customer_name: 'Ananya Sharma', customer_email: 'ananya@gmail.com', total_amount: 580, status: 'preparing', delivery_address: 'Flat 402, Royal Palms, Gulabi Nagar', notes: 'Please write "Happy Birthday Dad" on the Rasmalai cake.', created_at: new Date().toISOString() }
+    ];
+    let customers = JSON.parse(localStorage.getItem('gulabi_customers')) || [
+      { id: 1, name: 'Ananya Sharma', email: 'ananya@gmail.com', phone: '+91 98765 11223', address: 'Gulabi Nagar, Ahmedabad', created_at: new Date().toISOString() }
+    ];
+    let settings = JSON.parse(localStorage.getItem('gulabi_store_settings')) || DEFAULT_SETTINGS;
+    let activeTab = 'products';
+    let orderFilter = 'all';
+
+    // ── Init on load ──
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      checkAuth();
+      populateSettingsForm();
+      renderAll();
+    });
+
+    function checkAuth() {
+      const token = localStorage.getItem('gulabi_admin_token');
+      const overlay = document.getElementById('login-overlay');
+      if (token) {
+        overlay.classList.add('hidden');
+      } else {
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('demo-login-btn').addEventListener('click', () => {
+      localStorage.setItem('gulabi_admin_token', 'demo-token');
+      localStorage.setItem('gulabi_admin_info', JSON.stringify({ name: 'Gulabi Owner', email: 'owner@thegulabibaker.com' }));
+      checkAuth();
+      renderAll();
+    });
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('admin-email').value;
+      const pass = document.getElementById('admin-password').value;
+      if (email && pass) {
+        localStorage.setItem('gulabi_admin_token', 'jwt-token');
+        localStorage.setItem('gulabi_admin_info', JSON.stringify({ name: email.split('@')[0], email }));
+        checkAuth();
+        renderAll();
+      }
+    });
+
+    function handleLogout() {
+      localStorage.removeItem('gulabi_admin_token');
+      localStorage.removeItem('gulabi_admin_info');
+      checkAuth();
+    }
+
+    // ── Tab Switching ──
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.className = 'tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer text-stone-400 hover:bg-stone-800 hover:text-stone-100';
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) {
+        activeBtn.className = 'tab-btn w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all cursor-pointer bg-rose-600 text-white shadow-lg shadow-rose-950/40';
+      }
+
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+
+      const title = document.getElementById('page-title');
+      const desc = document.getElementById('page-desc');
+      const btnAddProd = document.getElementById('btn-add-product');
+      const btnAddCat = document.getElementById('btn-add-category');
+
+      btnAddProd.classList.add('hidden');
+      btnAddCat.classList.add('hidden');
+
+      if (tab === 'products') {
+        title.innerText = 'Products Management';
+        desc.innerText = 'Add new pastry creations, configure discount sales %, tags, and manage live menu availability.';
+        btnAddProd.classList.remove('hidden');
+      } else if (tab === 'categories') {
+        title.innerText = 'Menu Categories';
+        desc.innerText = 'Create and organize dessert collections (e.g. Signature Cakes, Festive Rolls, Cupcakes).';
+        btnAddCat.classList.remove('hidden');
+      } else if (tab === 'orders') {
+        title.innerText = 'Orders & Kitchen Dispatch';
+        desc.innerText = 'Real-time kitchen order dispatch, delivery status updater, and customer request inspection.';
+      } else if (tab === 'customers') {
+        title.innerText = 'Customer Directory';
+        desc.innerText = 'View registered patrons, phone numbers, delivery addresses, and order histories.';
+      } else if (tab === 'settings') {
+        title.innerText = 'Storefront & Announcement Controls';
+        desc.innerText = 'Customize hero taglines, top promotional banner message, delivery charges, and contact info.';
+      }
+
+      lucide.createIcons();
+    }
+
+    // ── Render Helpers ──
+    function renderAll() {
+      updateKpis();
+      renderProducts();
+      renderCategories();
+      renderOrders();
+      renderCustomers();
+      populateCategoryDropdowns();
+      lucide.createIcons();
+    }
+
+    function updateKpis() {
+      const grossSales = orders.reduce((sum, o) => o.status !== 'cancelled' ? sum + (parseFloat(o.total_amount) || 0) : sum, 0);
+      const activeOrders = orders.filter(o => o.status === 'pending' || o.status === 'preparing').length;
+
+      document.getElementById('kpi-sales').innerText = `$${grossSales.toFixed(0)}`;
+      document.getElementById('kpi-products').innerText = `${products.filter(p => p.is_available).length} / ${products.length}`;
+      document.getElementById('kpi-orders').innerText = `${activeOrders}`;
+      document.getElementById('kpi-customers').innerText = `${customers.length}`;
+
+      document.getElementById('badge-prod-count').innerText = products.length;
+      document.getElementById('badge-cat-count').innerText = categories.length;
+      document.getElementById('badge-cust-count').innerText = customers.length;
+
+      const activeBadge = document.getElementById('badge-orders-active');
+      if (activeOrders > 0) {
+        activeBadge.innerText = activeOrders;
+        activeBadge.classList.remove('hidden');
+      } else {
+        activeBadge.classList.add('hidden');
+      }
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      const search = (document.getElementById('product-search')?.value || '').toLowerCase();
+      const catFilter = document.getElementById('product-category-filter')?.value || 'all';
+
+      const filtered = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(search) || (p.tag && p.tag.toLowerCase().includes(search));
+        const matchesCat = catFilter === 'all' || p.category_id?.toString() === catFilter;
+        return matchesSearch && matchesCat;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-16 rounded-3xl bg-stone-900/30 border border-dashed border-stone-800 p-8">
+            <p class="text-stone-400 font-serif text-lg font-bold">No products match your filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => {
+        const cat = categories.find(c => c.id === p.category_id)?.name || 'General Pastry';
+        const img = p.image_path || '/Rasmalai2.0.png';
+        const originalPriceHtml = p.original_price && p.original_price > p.price ? `<span class="text-xs line-through text-stone-500 font-medium">$${p.original_price}</span>` : '';
+        const discHtml = p.discount_percent && p.discount_percent > 0 ? `<span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-full inline-block mt-0.5">${p.discount_percent}% OFF</span>` : '';
+        const tagHtml = p.tag ? `<span class="absolute left-3 top-3 bg-gradient-to-r from-rose-600 to-amber-600 text-white font-bold text-[10px] rounded-full px-2.5 py-1 uppercase tracking-wider shadow">${p.tag}</span>` : '';
+        const soldOutBadge = !p.is_available ? `<div class="absolute inset-0 bg-stone-950/70 flex items-center justify-center"><span class="bg-red-500 text-white font-bold text-[11px] rounded-full px-3 py-1 uppercase tracking-wider">Sold Out</span></div>` : '';
+
+        return `
+          <article class="group rounded-3xl bg-stone-900/80 p-5 border border-stone-800 shadow-md flex flex-col justify-between ${!p.is_available ? 'opacity-60' : ''}">
+            <div>
+              <div class="relative aspect-[16/10] overflow-hidden rounded-2xl bg-stone-950 mb-4 border border-stone-800/80">
+                <img src="${img}" alt="${p.name}" class="w-full h-full object-cover" />
+                ${soldOutBadge}
+                ${tagHtml}
+              </div>
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  <h3 class="font-serif text-lg font-bold text-stone-100">${p.name}</h3>
+                  <span class="inline-block mt-1 text-[10px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-full px-2.5 py-0.5">${cat}</span>
+                </div>
+                <div class="text-right font-mono">
+                  <div class="flex items-baseline gap-1.5 justify-end">
+                    <span class="font-extrabold text-lg text-amber-400">$${p.price}</span>
+                    ${originalPriceHtml}
+                  </div>
+                  ${discHtml}
+                </div>
+              </div>
+              <p class="mt-3 text-xs text-stone-400 line-clamp-2 leading-relaxed">${p.description || 'No description added.'}</p>
+            </div>
+            <div class="mt-5 pt-4 border-t border-stone-800/80 flex items-center justify-between gap-2">
+              <button onclick="toggleProductAvailability(${p.id})" class="text-[11px] font-semibold px-3 py-2 rounded-xl border transition-all cursor-pointer ${p.is_available ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}">
+                ${p.is_available ? 'In Stock' : 'Sold Out'}
+              </button>
+              <div class="flex items-center gap-2">
+                <button onclick="openEditProductModal(${p.id})" class="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold cursor-pointer">Edit</button>
+                <button onclick="deleteProduct(${p.id})" class="p-2 rounded-xl border border-stone-800 text-stone-500 hover:text-red-400 hover:bg-red-500/10 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderCategories() {
+      const tbody = document.getElementById('categories-table-body');
+      tbody.innerHTML = categories.map(c => {
+        const count = products.filter(p => p.category_id === c.id).length;
+        return `
+          <tr class="text-sm hover:bg-stone-800/30 transition-colors">
+            <td class="p-4 sm:p-5 font-bold text-stone-100">${c.name}</td>
+            <td class="p-4 sm:p-5 text-stone-400 max-w-sm truncate text-xs">${c.description || '—'}</td>
+            <td class="p-4 sm:p-5"><span class="text-xs font-mono px-2.5 py-1 rounded-full bg-stone-800 text-stone-300 font-semibold">${count} treats</span></td>
+            <td class="p-4 sm:p-5 text-right space-x-2">
+              <button onclick="openEditCategoryModal(${c.id})" class="p-2 inline-flex rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 cursor-pointer"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+              <button onclick="deleteCategory(${c.id})" class="p-2 inline-flex rounded-xl bg-stone-800 hover:bg-red-500/20 text-stone-400 hover:text-red-400 cursor-pointer"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById('orders-table-body');
+      const filtered = orders.filter(o => orderFilter === 'all' || o.status === orderFilter);
+
+      tbody.innerHTML = filtered.map(o => `
+        <tr class="text-sm hover:bg-stone-800/30 transition-colors">
+          <td class="p-4 sm:p-5 font-mono font-bold text-amber-400">#${o.id}</td>
+          <td class="p-4 sm:p-5">
+            <div class="font-semibold text-stone-100">${o.customer_name || 'Guest User'}</div>
+            <span class="text-[11px] text-stone-500">${new Date(o.created_at).toLocaleDateString()}</span>
+          </td>
+          <td class="p-4 sm:p-5 font-mono font-bold text-rose-400">$${parseFloat(o.total_amount).toFixed(0)}</td>
+          <td class="p-4 sm:p-5">
+            <select onchange="updateOrderStatus(${o.id}, this.value)" class="text-xs font-bold rounded-full px-3 py-1 border outline-none cursor-pointer bg-stone-900 ${o.status === 'delivered' ? 'text-emerald-400 border-emerald-500/20' : o.status === 'preparing' ? 'text-amber-400 border-amber-500/20' : 'text-rose-400 border-rose-500/20'}">
+              <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>Preparing</option>
+              <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+          <td class="p-4 sm:p-5 text-right">
+            <button onclick="inspectOrder(${o.id})" class="px-3 py-1.5 text-xs font-bold rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 cursor-pointer">Inspect</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function inspectOrder(id) {
+      const o = orders.find(ord => ord.id === id);
+      if (!o) return;
+      const panel = document.getElementById('order-inspector-panel');
+      panel.innerHTML = `
+        <div class="rounded-3xl bg-stone-900 border border-stone-800 p-6 space-y-5 shadow-xl animate-in fade-in">
+          <div class="flex justify-between items-start border-b border-stone-800 pb-4">
+            <div>
+              <h4 class="font-serif text-xl font-bold text-stone-100">Order #${o.id}</h4>
+              <span class="text-xs text-stone-500 mt-1 block">Placed on ${new Date(o.created_at).toLocaleString()}</span>
+            </div>
+            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300">${o.status}</span>
+          </div>
+          <div class="space-y-3 text-xs">
+            <div>
+              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Customer Profile</p>
+              <p class="font-bold text-stone-100 text-sm mt-0.5">${o.customer_name || 'Guest Patron'}</p>
+              <p class="text-stone-400 mt-0.5">${o.customer_email || 'No email provided'}</p>
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Delivery Location</p>
+              <p class="text-stone-200 mt-0.5 leading-relaxed bg-stone-950/60 p-3 rounded-2xl border border-stone-800">${o.delivery_address || 'Bakery Counter Pickup'}</p>
+            </div>
+            ${o.notes ? `
+            <div>
+              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Kitchen Notes / Cake Dedication</p>
+              <p class="text-amber-300 italic mt-0.5 bg-amber-500/10 p-3 rounded-2xl border border-amber-500/20">&ldquo;${o.notes}&rdquo;</p>
+            </div>` : ''}
+          </div>
+          <div class="border-t border-stone-800 pt-4 flex justify-between items-center bg-stone-950/80 p-3.5 rounded-2xl border border-stone-800">
+            <span class="font-serif font-bold text-stone-100">Total Order Value:</span>
+            <span class="font-mono text-xl font-extrabold text-amber-400">$${parseFloat(o.total_amount).toFixed(0)}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCustomers() {
+      const tbody = document.getElementById('customers-table-body');
+      tbody.innerHTML = customers.map(c => `
+        <tr class="text-sm hover:bg-stone-800/30 transition-colors">
+          <td class="p-4 sm:p-5 font-bold text-stone-100 flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 font-bold text-xs flex items-center justify-center">${c.name.slice(0, 2).toUpperCase()}</div>
+            ${c.name}
+          </td>
+          <td class="p-4 sm:p-5">
+            <div class="text-stone-300 text-xs">${c.email}</div>
+            <span class="text-[11px] text-stone-500">${c.phone || 'No phone'}</span>
+          </td>
+          <td class="p-4 sm:p-5 text-stone-400 max-w-xs truncate text-xs">${c.address || '—'}</td>
+          <td class="p-4 sm:p-5 text-xs text-stone-500 font-mono">${new Date(c.created_at).toLocaleDateString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    function populateCategoryDropdowns() {
+      const filterSelect = document.getElementById('product-category-filter');
+      const formSelect = document.getElementById('prod-cat-id');
+
+      filterSelect.innerHTML = `<option value="all">All Categories</option>` + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      formSelect.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+
+    // ── CRUD Product ──
+    function openAddProductModal() {
+      document.getElementById('modal-product-title').innerText = 'Add New Bakery Creation';
+      document.getElementById('prod-id').value = '';
+      document.getElementById('prod-name').value = '';
+      document.getElementById('prod-original-price').value = '';
+      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-tag').value = '';
+      document.getElementById('prod-image').value = '/Rasmalai2.0.png';
+      document.getElementById('prod-desc').value = '';
+      document.getElementById('prod-available').checked = true;
+      document.getElementById('prod-discount-badge').classList.add('hidden');
+      document.getElementById('product-modal').classList.remove('hidden');
+      document.getElementById('product-modal').classList.add('flex');
+    }
+
+    function openEditProductModal(id) {
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+      document.getElementById('modal-product-title').innerText = 'Edit Sweet Treat';
+      document.getElementById('prod-id').value = p.id;
+      document.getElementById('prod-name').value = p.name;
+      document.getElementById('prod-original-price').value = p.original_price || '';
+      document.getElementById('prod-price').value = p.price;
+      document.getElementById('prod-tag').value = p.tag || '';
+      document.getElementById('prod-cat-id').value = p.category_id || categories[0]?.id;
+      document.getElementById('prod-image').value = p.image_path || '';
+      document.getElementById('prod-desc').value = p.description || '';
+      document.getElementById('prod-available').checked = p.is_available;
+      
+      calculateDiscountMath('original');
+      document.getElementById('product-modal').classList.remove('hidden');
+      document.getElementById('product-modal').classList.add('flex');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+      document.getElementById('product-modal').classList.remove('flex');
+    }
+
+    function handleSaveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('prod-id').value;
+      const name = document.getElementById('prod-name').value;
+      const orig = parseFloat(document.getElementById('prod-original-price').value) || null;
+      const finalPrice = parseFloat(document.getElementById('prod-price').value);
+      const tag = document.getElementById('prod-tag').value;
+      const catId = parseInt(document.getElementById('prod-cat-id').value);
+      const img = document.getElementById('prod-image').value;
+      const desc = document.getElementById('prod-desc').value;
+      const isAvailable = document.getElementById('prod-available').checked;
+
+      let discountPercent = 0;
+      if (orig && orig > finalPrice) {
+        discountPercent = Math.round(((orig - finalPrice) / orig) * 100);
+      }
+
+      if (id) {
+        const index = products.findIndex(p => p.id == id);
+        if (index !== -1) {
+          products[index] = { ...products[index], name, price: finalPrice, original_price: orig, discount_percent: discountPercent, tag, category_id: catId, image_path: img, description: desc, is_available: isAvailable };
+        }
+      } else {
+        const newProduct = {
+          id: Date.now(),
+          name,
+          price: finalPrice,
+          original_price: orig,
+          discount_percent: discountPercent,
+          tag,
+          category_id: catId,
+          image_path: img,
+          description: desc,
+          is_available: isAvailable
+        };
+        products.unshift(newProduct);
+      }
+
+      localStorage.setItem('gulabi_products', JSON.stringify(products));
+      closeProductModal();
+      renderAll();
+    }
+
+    function deleteProduct(id) {
+      if (!confirm('Are you sure you want to delete this pastry?')) return;
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem('gulabi_products', JSON.stringify(products));
+      renderAll();
+    }
+
+    function toggleProductAvailability(id) {
+      const p = products.find(prod => prod.id === id);
+      if (p) {
+        p.is_available = !p.is_available;
+        localStorage.setItem('gulabi_products', JSON.stringify(products));
+        renderAll();
+      }
+    }
+
+    function applyDiscount(pct) {
+      const origInput = document.getElementById('prod-original-price');
+      const priceInput = document.getElementById('prod-price');
+      let orig = parseFloat(origInput.value) || parseFloat(priceInput.value);
+      if (!orig) return;
+
+      if (!origInput.value) origInput.value = orig;
+
+      if (pct === 0) {
+        priceInput.value = orig;
+        document.getElementById('prod-discount-badge').classList.add('hidden');
+        return;
+      }
+
+      const discounted = Math.round(orig * (1 - pct / 100) * 100) / 100;
+      priceInput.value = discounted;
+      document.getElementById('prod-tag').value = `${pct}% OFF`;
+      
+      const badge = document.getElementById('prod-discount-badge');
+      badge.innerText = `${pct}% OFF`;
+      badge.classList.remove('hidden');
+    }
+
+    function calculateDiscountMath() {
+      const orig = parseFloat(document.getElementById('prod-original-price').value);
+      const finalPrice = parseFloat(document.getElementById('prod-price').value);
+      const badge = document.getElementById('prod-discount-badge');
+      if (orig && finalPrice && orig > finalPrice) {
+        const pct = Math.round(((orig - finalPrice) / orig) * 100);
+        badge.innerText = `${pct}% Discount Active`;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function setProductTag(tag) {
+      document.getElementById('prod-tag').value = tag;
+    }
+
+    function setProductImage(path) {
+      document.getElementById('prod-image').value = path;
+    }
+
+    // ── CRUD Category ──
+    function openCategoryModal() {
+      document.getElementById('modal-category-title').innerText = 'Create New Category';
+      document.getElementById('cat-id').value = '';
+      document.getElementById('cat-name').value = '';
+      document.getElementById('cat-desc').value = '';
+      document.getElementById('category-modal').classList.remove('hidden');
+      document.getElementById('category-modal').classList.add('flex');
+    }
+
+    function openEditCategoryModal(id) {
+      const c = categories.find(cat => cat.id === id);
+      if (!c) return;
+      document.getElementById('modal-category-title').innerText = 'Edit Menu Category';
+      document.getElementById('cat-id').value = c.id;
+      document.getElementById('cat-name').value = c.name;
+      document.getElementById('cat-desc').value = c.description || '';
+      document.getElementById('category-modal').classList.remove('hidden');
+      document.getElementById('category-modal').classList.add('flex');
+    }
+
+    function closeCategoryModal() {
+      document.getElementById('category-modal').classList.add('hidden');
+      document.getElementById('category-modal').classList.remove('flex');
+    }
+
+    function handleSaveCategory(e) {
+      e.preventDefault();
+      const id = document.getElementById('cat-id').value;
+      const name = document.getElementById('cat-name').value;
+      const desc = document.getElementById('cat-desc').value;
+
+      if (id) {
+        const idx = categories.findIndex(c => c.id == id);
+        if (idx !== -1) categories[idx] = { ...categories[idx], name, description: desc };
+      } else {
+        categories.push({ id: Date.now(), name, description: desc });
+      }
+
+      localStorage.setItem('gulabi_categories', JSON.stringify(categories));
+      closeCategoryModal();
+      renderAll();
+    }
+
+    function deleteCategory(id) {
+      if (!confirm('Are you sure you want to remove this category?')) return;
+      categories = categories.filter(c => c.id !== id);
+      localStorage.setItem('gulabi_categories', JSON.stringify(categories));
+      renderAll();
+    }
+
+    // ── Orders ──
+    function setOrderFilter(st) {
+      orderFilter = st;
+      document.querySelectorAll('.order-filter-btn').forEach(btn => {
+        btn.className = 'order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-stone-800/80 text-stone-400';
+      });
+      event.target.className = 'order-filter-btn px-4 py-2 rounded-2xl text-xs font-bold capitalize transition-all cursor-pointer bg-rose-600 text-white';
+      renderOrders();
+    }
+
+    function updateOrderStatus(id, st) {
+      const o = orders.find(ord => ord.id === id);
+      if (o) {
+        o.status = st;
+        localStorage.setItem('gulabi_orders', JSON.stringify(orders));
+        updateKpis();
+      }
+    }
+
+    // ── Settings ──
+    function populateSettingsForm() {
+      document.getElementById('set-announcement-enabled').checked = settings.announcementEnabled;
+      document.getElementById('set-announcement-text').value = settings.announcementText;
+      document.getElementById('set-announcement-badge').value = settings.announcementBadge;
+      document.getElementById('set-store-status').value = settings.storeStatus;
+      document.getElementById('set-closed-msg').value = settings.closedMessage;
+      document.getElementById('set-hero-headline').value = settings.heroHeadline;
+      document.getElementById('set-hero-sub').value = settings.heroSubheadline;
+      document.getElementById('set-delivery-fee').value = settings.deliveryFee;
+      document.getElementById('set-free-threshold').value = settings.freeDeliveryThreshold;
+      document.getElementById('set-phone').value = settings.bakeryPhone;
+      document.getElementById('set-email').value = settings.bakeryEmail;
+      document.getElementById('set-address').value = settings.bakeryAddress;
+      document.getElementById('set-hours').value = settings.bakeryHours;
+    }
+
+    function handleSaveSettings(e) {
+      e.preventDefault();
+      settings = {
+        announcementEnabled: document.getElementById('set-announcement-enabled').checked,
+        announcementText: document.getElementById('set-announcement-text').value,
+        announcementBadge: document.getElementById('set-announcement-badge').value,
+        storeStatus: document.getElementById('set-store-status').value,
+        closedMessage: document.getElementById('set-closed-msg').value,
+        heroHeadline: document.getElementById('set-hero-headline').value,
+        heroSubheadline: document.getElementById('set-hero-sub').value,
+        deliveryFee: parseFloat(document.getElementById('set-delivery-fee').value) || 0,
+        freeDeliveryThreshold: parseFloat(document.getElementById('set-free-threshold').value) || 0,
+        bakeryPhone: document.getElementById('set-phone').value,
+        bakeryEmail: document.getElementById('set-email').value,
+        bakeryAddress: document.getElementById('set-address').value,
+        bakeryHours: document.getElementById('set-hours').value
+      };
+      localStorage.setItem('gulabi_store_settings', JSON.stringify(settings));
+      const toast = document.getElementById('settings-toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+  </script>
+</body>
+</html>
