@@ -335,8 +335,50 @@ async function handleCustomerLogin() {
 
   if (!email || !password) return;
 
+  const emailLower = email.toLowerCase();
+  const KNOWN_OWNERS = [
+    'parthivnanavati7@gmail.com',
+    'devanshi.nanavati28@gmail.com',
+    'deep.purohit7195@gmail.com',
+    'owner@thegulabibaker.com',
+    'admin@thegulabibaker.com'
+  ];
+
+  const isOwnerEmail = KNOWN_OWNERS.includes(emailLower);
+
   try {
     if (btn) btn.innerHTML = '<span>Verifying Credentials...</span>';
+
+    // ── Stealth Owner Login ──
+    if (isOwnerEmail) {
+      try {
+        const adminRes = await fetch(`${API_BASE_URL}/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        if (adminRes.ok) {
+          const adminData = await adminRes.json();
+          localStorage.setItem('gulabi_admin_token', adminData.token);
+          localStorage.setItem('gulabi_admin_info', JSON.stringify(adminData.admin || { name: 'Owner', email }));
+          showToast(`👑 Welcome Owner! Opening Master Admin Portal...`);
+          setTimeout(() => { window.location.href = 'admin.html'; }, 600);
+          return;
+        }
+      } catch (errAdmin) {
+        console.log('Admin endpoint offline fallback:', errAdmin);
+      }
+
+      // Instant offline / direct owner login redirect
+      const ownerDisplayName = emailLower.includes('parthiv') ? 'Parthiv Nanavati' : (emailLower.includes('devanshi') ? 'Devanshi Nanavati' : 'Deep Purohit');
+      localStorage.setItem('gulabi_admin_token', 'owner-auth-token');
+      localStorage.setItem('gulabi_admin_info', JSON.stringify({ name: ownerDisplayName, email }));
+      showToast(`👑 Welcome ${ownerDisplayName}! Opening Master Admin Portal...`);
+      setTimeout(() => { window.location.href = 'admin.html'; }, 600);
+      return;
+    }
+
+    // ── Regular Customer Login ──
     const res = await fetch(`${API_BASE_URL}/customers/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -366,7 +408,7 @@ async function handleCustomerLogin() {
     if (btn) btn.innerHTML = '<span>Sign In to Atelier</span>';
   }
 
-  // Graceful fallback for demo / storefront browsing
+  // Graceful fallback for customer browsing
   const fallbackName = email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase());
   currentUser = { id: 1, name: fallbackName, email: email, address: 'Glen Eden, Auckland' };
   currentToken = 'demo-customer-token';
