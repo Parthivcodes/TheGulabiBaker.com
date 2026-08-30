@@ -450,12 +450,17 @@ function initNavbarScroll() {
   });
 
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  if (mobileMenuBtn) {
+  const navLeft = document.querySelector('.nav-left');
+  if (mobileMenuBtn && navLeft) {
     mobileMenuBtn.addEventListener('click', () => {
-      const navLinks = document.querySelector('.nav-links');
-      if (navLinks) {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-      }
+      navLeft.classList.toggle('mobile-open');
+    });
+    // Close menu when a navigation link is clicked
+    const links = navLeft.querySelectorAll('.nav-link');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        navLeft.classList.remove('mobile-open');
+      });
     });
   }
 }
