@@ -465,7 +465,7 @@
         <div class="p-4 rounded-2xl bg-stone-950/80 border border-stone-800 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-              <i data-lucide="percent" class="w-3.5 h-3.5"></i> Pricing & Discount Calculator
+              <i data-lucide="percent" class="w-3.5 h-3.5"></i> Base Starting Price & Discount Calculator
             </span>
             <span id="prod-discount-badge" class="hidden text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0% OFF</span>
           </div>
@@ -477,8 +477,8 @@
             </div>
 
             <div>
-              <label class="block text-[11px] font-semibold text-rose-400 mb-1" for="prod-price">Final Selling Price ($) <span class="text-rose-500">*</span></label>
-              <input required id="prod-price" type="number" step="0.01" oninput="calculateDiscountMath('final')" placeholder="e.g. 280" class="w-full rounded-xl border-2 border-rose-500/50 bg-stone-900 px-3.5 py-2.5 text-sm text-stone-100 outline-none font-mono font-bold" />
+              <label class="block text-[11px] font-semibold text-rose-400 mb-1" for="prod-price">Final Base Price ($ NZD) <span class="text-rose-500">*</span></label>
+              <input required id="prod-price" type="number" step="0.01" oninput="calculateDiscountMath('final')" placeholder="e.g. 70" class="w-full rounded-xl border-2 border-rose-500/50 bg-stone-900 px-3.5 py-2.5 text-sm text-stone-100 outline-none font-mono font-bold" />
             </div>
           </div>
 
@@ -493,6 +493,46 @@
               <button type="button" onclick="applyDiscount(50)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-stone-800 bg-stone-900 text-stone-300 hover:bg-stone-800 cursor-pointer">50% OFF</button>
               <button type="button" onclick="applyDiscount(0)" class="text-xs font-semibold px-2 py-1 rounded-lg text-red-400 hover:bg-red-500/10 cursor-pointer">Reset</button>
             </div>
+          </div>
+        </div>
+
+        <!-- ── CAKE SIZES & MULTI-TIER PRICING (INCHES / BOXES) ── -->
+        <div class="p-4 rounded-2xl bg-stone-950/90 border border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+              <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Size Variations & Custom Pricing (Inches / Boxes)
+            </span>
+            <span class="text-[10px] text-stone-400 font-semibold">Different price per size</span>
+          </div>
+          <p class="text-[11px] text-stone-400 leading-relaxed">Configure individual cake diameters (5", 6", 7", 9", 11/12") or custom pack sizes. Customers select their desired size on the website.</p>
+
+          <!-- 1-Click Size Presets -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-1.5">Quick 1-Click Size Presets:</label>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="applyCake5TierPreset()" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 cursor-pointer flex items-center gap-1.5">
+                🎂 5 Cake Sizes (5", 6", 7", 9", 11/12")
+              </button>
+              <button type="button" onclick="applyCupcakeBoxPreset()" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 cursor-pointer flex items-center gap-1.5">
+                🧁 Cupcake Packs (Single, Box 4/6/12)
+              </button>
+              <button type="button" onclick="addSingleCustomSizeRow('', '')" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-stone-700 bg-stone-800 text-stone-200 hover:bg-stone-700 cursor-pointer flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Custom Size
+              </button>
+              <button type="button" onclick="clearAllSizes()" class="text-xs font-semibold px-2 py-1 rounded-lg text-red-400 hover:bg-red-500/10 cursor-pointer">
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Size Rows Grid -->
+          <div id="size-rows-container" class="space-y-2">
+            <!-- Dynamic size rows injected via JS -->
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-stone-800/80 text-xs text-stone-400">
+            <span>Base starting price: <strong id="base-price-hint" class="text-amber-400 font-mono font-bold">$70.00</strong></span>
+            <span class="text-[10px] text-stone-500">Auto-synced with lowest size</span>
           </div>
         </div>
 
@@ -586,12 +626,12 @@
   <script>
     // ── Default State ──
     const DEFAULT_PRODUCTS = [
-      { id: 1, name: 'Gulab Jamun Cake', price: 70, original_price: 85, discount_percent: 18, tag: 'Signature Showpiece', image_path: 'assets/images/card_hero_gulab_jamun_3tier.jpg', description: 'Cardamom sponge layered with rosewater syrup, slow-simmered mawa cream, and 24k edible gold foil.', category_id: 1, is_available: true },
-      { id: 2, name: 'Kesar Pista Cake', price: 80, original_price: 95, discount_percent: 16, tag: 'Royal Saffron', image_path: 'assets/images/card_kesar_pista_cake.jpg', description: 'Saffron-infused hung curd cream mousse, golden saffron streaks, and roasted Iranian pistachios.', category_id: 1, is_available: true },
-      { id: 3, name: 'Rasmalai Cake', price: 75, original_price: 90, discount_percent: 17, tag: 'Best Seller', image_path: 'assets/images/card_rasmalai_cake_real.jpg', description: 'Cardamom sponge layered with saffron rabdi cream, authentic soft rasmalai dumplings, and pure NZ butter.', category_id: 1, is_available: true },
-      { id: 4, name: 'Biscoff Fresh Cream Cake', price: 70, original_price: 80, discount_percent: 12, tag: 'Lotus Caramel', image_path: 'assets/images/card_biscoff_fresh_cream_cake.jpg', description: 'Layers of light vanilla sponge, Lotus Biscoff drip, speculoos cookie crunch, and whipped NZ fresh cream.', category_id: 1, is_available: true },
-      { id: 5, name: 'Masala Chai Cake', price: 65, original_price: 75, discount_percent: 13, tag: 'Spiced Chai', image_path: 'assets/images/card_masala_chai_cake.jpg', description: 'Infused with freshly crushed ginger, cinnamon, green cardamom, and rich Assam tea steeped in NZ dairy.', category_id: 1, is_available: true },
-      { id: 6, name: 'Gulab Jamun Cupcake', price: 6.99, original_price: 8.50, discount_percent: 18, tag: 'Individual Cupcake', image_path: 'assets/images/card_gulab_jamun_cupcakes.jpg', description: 'Handcrafted vanilla crumb crowned with authentic soft gulab jamun, rosewater mawa buttercream, and 24k gold leaf.', category_id: 2, is_available: true }
+      { id: 1, name: 'Gulab Jamun Cake', price: 70, original_price: 85, discount_percent: 18, tag: 'Signature Showpiece', image_path: 'assets/images/card_hero_gulab_jamun_3tier.jpg', description: 'Cardamom sponge layered with rosewater syrup, slow-simmered mawa cream, and 24k edible gold foil.', category_id: 1, is_available: true, sizes: { '5 inch': 70, '6 inch': 85, '7 inch': 110, '9 inch': 160, '11/12 inch': 220 } },
+      { id: 2, name: 'Kesar Pista Cake', price: 80, original_price: 95, discount_percent: 16, tag: 'Royal Saffron', image_path: 'assets/images/card_kesar_pista_cake.jpg', description: 'Saffron-infused hung curd cream mousse, golden saffron streaks, and roasted Iranian pistachios.', category_id: 1, is_available: true, sizes: { '5 inch': 80, '6 inch': 100, '7 inch': 120, '9 inch': 170, '11/12 inch': 240 } },
+      { id: 3, name: 'Rasmalai Cake', price: 75, original_price: 90, discount_percent: 17, tag: 'Best Seller', image_path: 'assets/images/card_rasmalai_cake_real.jpg', description: 'Cardamom sponge layered with saffron rabdi cream, authentic soft rasmalai dumplings, and pure NZ butter.', category_id: 1, is_available: true, sizes: { '5 inch': 75, '6 inch': 95, '7 inch': 115, '9 inch': 165, '11/12 inch': 230 } },
+      { id: 4, name: 'Biscoff Fresh Cream Cake', price: 70, original_price: 80, discount_percent: 12, tag: 'Lotus Caramel', image_path: 'assets/images/card_biscoff_fresh_cream_cake.jpg', description: 'Layers of light vanilla sponge, Lotus Biscoff drip, speculoos cookie crunch, and whipped NZ fresh cream.', category_id: 1, is_available: true, sizes: { '5 inch': 70, '6 inch': 85, '7 inch': 110, '9 inch': 160, '11/12 inch': 220 } },
+      { id: 5, name: 'Masala Chai Cake', price: 65, original_price: 75, discount_percent: 13, tag: 'Spiced Chai', image_path: 'assets/images/card_masala_chai_cake.jpg', description: 'Infused with freshly crushed ginger, cinnamon, green cardamom, and rich Assam tea steeped in NZ dairy.', category_id: 1, is_available: true, sizes: { '5 inch': 65, '6 inch': 80, '7 inch': 100, '9 inch': 145, '11/12 inch': 200 } },
+      { id: 6, name: 'Gulab Jamun Cupcake', price: 6.99, original_price: 8.50, discount_percent: 18, tag: 'Individual Cupcake', image_path: 'assets/images/card_gulab_jamun_cupcakes.jpg', description: 'Handcrafted vanilla crumb crowned with authentic soft gulab jamun, rosewater mawa buttercream, and 24k gold leaf.', category_id: 2, is_available: true, sizes: { 'Single Piece': 6.99, 'Box of 4': 26, 'Box of 6': 38, 'Box of 12': 72 } }
     ];
 
     const DEFAULT_CATEGORIES = [
@@ -855,6 +895,24 @@
         const tagHtml = p.tag ? `<span class="absolute left-3 top-3 bg-gradient-to-r from-rose-600 to-amber-600 text-white font-bold text-[10px] rounded-full px-2.5 py-1 uppercase tracking-wider shadow">${p.tag}</span>` : '';
         const soldOutBadge = !p.is_available ? `<div class="absolute inset-0 bg-stone-950/70 flex items-center justify-center"><span class="bg-red-500 text-white font-bold text-[11px] rounded-full px-3 py-1 uppercase tracking-wider">Sold Out</span></div>` : '';
 
+        // Size Variations Chips
+        let sizesHtml = '';
+        if (p.sizes && typeof p.sizes === 'object' && Object.keys(p.sizes).length > 0) {
+          sizesHtml = `
+            <div class="mt-3 pt-2.5 border-t border-stone-800/60">
+              <span class="text-[9px] uppercase font-bold text-stone-500 block mb-1">Available Sizes & Tiered Pricing:</span>
+              <div class="flex flex-wrap gap-1">
+                ${Object.entries(p.sizes).map(([sz, pr]) => `
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-stone-950 text-stone-300 border border-stone-800 flex items-center gap-1">
+                    <span>${sz}:</span>
+                    <strong class="text-amber-400">$${pr}</strong>
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
         return `
           <article class="group rounded-3xl bg-stone-900/80 p-5 border border-stone-800 shadow-md flex flex-col justify-between ${!p.is_available ? 'opacity-60' : ''}">
             <div>
@@ -870,15 +928,17 @@
                 </div>
                 <div class="text-right font-mono">
                   <div class="flex items-baseline gap-1.5 justify-end">
+                    <span class="text-xs text-stone-500 uppercase">From</span>
                     <span class="font-extrabold text-lg text-amber-400">$${p.price}</span>
                     ${originalPriceHtml}
                   </div>
                   ${discHtml}
                 </div>
               </div>
-              <p class="mt-3 text-xs text-stone-400 line-clamp-2 leading-relaxed">${p.description || 'No description added.'}</p>
+              <p class="mt-2.5 text-xs text-stone-400 line-clamp-2 leading-relaxed">${p.description || 'No description added.'}</p>
+              ${sizesHtml}
             </div>
-            <div class="mt-5 pt-4 border-t border-stone-800/80 flex items-center justify-between gap-2">
+            <div class="mt-4 pt-3 border-t border-stone-800/80 flex items-center justify-between gap-2">
               <button onclick="toggleProductAvailability(${p.id})" class="text-[11px] font-semibold px-3 py-2 rounded-xl border transition-all cursor-pointer ${p.is_available ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}">
                 ${p.is_available ? 'In Stock' : 'Sold Out'}
               </button>
@@ -959,18 +1019,19 @@
               <p class="text-stone-400 mt-0.5">${o.customer_email || 'No email provided'}</p>
             </div>
             <div>
-              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Delivery Location</p>
-              <p class="text-stone-200 mt-0.5 leading-relaxed bg-stone-950/60 p-3 rounded-2xl border border-stone-800">${o.delivery_address || 'Bakery Counter Pickup'}</p>
+              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Delivery Destination</p>
+              <p class="text-stone-200 mt-0.5">${o.delivery_address || 'Collection at Glen Eden Bakehouse'}</p>
             </div>
             ${o.notes ? `
-            <div>
-              <p class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Kitchen Notes / Cake Dedication</p>
-              <p class="text-amber-300 italic mt-0.5 bg-amber-500/10 p-3 rounded-2xl border border-amber-500/20">&ldquo;${o.notes}&rdquo;</p>
-            </div>` : ''}
-          </div>
-          <div class="border-t border-stone-800 pt-4 flex justify-between items-center bg-stone-950/80 p-3.5 rounded-2xl border border-stone-800">
-            <span class="font-serif font-bold text-stone-100">Total Order Value:</span>
-            <span class="font-mono text-xl font-extrabold text-amber-400">$${parseFloat(o.total_amount).toFixed(0)}</span>
+              <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                <p class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Patron Dedication / Note</p>
+                <p class="text-amber-100 mt-1 italic font-serif">"${o.notes}"</p>
+              </div>
+            ` : ''}
+            <div class="pt-3 border-t border-stone-800 flex justify-between items-center text-sm font-bold text-stone-100">
+              <span>Total Charge</span>
+              <span class="text-amber-400 font-mono text-lg">$${parseFloat(o.total_amount).toFixed(2)}</span>
+            </div>
           </div>
         </div>
       `;
@@ -1002,18 +1063,119 @@
       formSelect.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
+    // ── Size Variations & Multi-Tier Pricing Helpers ──
+    function addSingleCustomSizeRow(name = '', price = '') {
+      const container = document.getElementById('size-rows-container');
+      const row = document.createElement('div');
+      row.className = 'size-row grid grid-cols-12 gap-2 items-center bg-stone-900/90 p-2.5 rounded-xl border border-stone-800 animate-in fade-in duration-200';
+      row.innerHTML = `
+        <div class="col-span-6 sm:col-span-6">
+          <label class="block text-[9px] uppercase font-bold text-stone-400 mb-0.5">Size / Dimension</label>
+          <input type="text" class="size-name w-full rounded-lg border border-stone-700 bg-stone-950 px-2.5 py-1.5 text-xs text-stone-100 outline-none focus:border-rose-500 font-semibold" placeholder="e.g. 5 inch or 6 inch" value="${name}" required />
+        </div>
+        <div class="col-span-4 sm:col-span-5">
+          <label class="block text-[9px] uppercase font-bold text-rose-400 mb-0.5">Price ($ NZD) <span class="text-rose-500">*</span></label>
+          <input type="number" step="0.01" class="size-price w-full rounded-lg border border-rose-500/50 bg-stone-950 px-2.5 py-1.5 text-xs text-stone-100 outline-none font-mono font-bold" placeholder="70.00" value="${price}" oninput="updateBasePriceFromSizes()" required />
+        </div>
+        <div class="col-span-2 sm:col-span-1 text-center">
+          <label class="block text-[9px] text-transparent mb-0.5">Del</label>
+          <button type="button" onclick="removeSizeRow(this)" class="p-1.5 rounded-lg text-stone-500 hover:text-rose-400 hover:bg-rose-500/10 cursor-pointer" title="Remove Size">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+      lucide.createIcons();
+      updateBasePriceFromSizes();
+    }
+
+    function removeSizeRow(btn) {
+      btn.closest('.size-row').remove();
+      updateBasePriceFromSizes();
+    }
+
+    function clearAllSizes() {
+      document.getElementById('size-rows-container').innerHTML = '';
+      updateBasePriceFromSizes();
+    }
+
+    function applyCake5TierPreset() {
+      clearAllSizes();
+      addSingleCustomSizeRow('5 inch', '70.00');
+      addSingleCustomSizeRow('6 inch', '85.00');
+      addSingleCustomSizeRow('7 inch', '110.00');
+      addSingleCustomSizeRow('9 inch', '160.00');
+      addSingleCustomSizeRow('11/12 inch', '220.00');
+    }
+
+    function applyCupcakeBoxPreset() {
+      clearAllSizes();
+      addSingleCustomSizeRow('Single Piece', '6.99');
+      addSingleCustomSizeRow('Box of 4', '26.00');
+      addSingleCustomSizeRow('Box of 6', '38.00');
+      addSingleCustomSizeRow('Box of 12', '72.00');
+    }
+
+    function updateBasePriceFromSizes() {
+      const rows = document.querySelectorAll('.size-row');
+      const prices = [];
+      rows.forEach(r => {
+        const val = parseFloat(r.querySelector('.size-price')?.value);
+        if (!isNaN(val) && val > 0) prices.push(val);
+      });
+
+      const hint = document.getElementById('base-price-hint');
+      const baseInput = document.getElementById('prod-price');
+
+      if (prices.length > 0) {
+        const minPrice = Math.min(...prices);
+        hint.innerText = `$${minPrice.toFixed(2)}`;
+        if (!baseInput.value || parseFloat(baseInput.value) === 0 || baseInput.value === '70' || baseInput.value === '280') {
+          baseInput.value = minPrice.toFixed(2);
+        }
+      } else {
+        const currentVal = parseFloat(baseInput.value) || 0;
+        hint.innerText = `$${currentVal.toFixed(2)}`;
+      }
+    }
+
+    function collectSizesFromUI() {
+      const rows = document.querySelectorAll('.size-row');
+      if (rows.length === 0) return null;
+      const sizes = {};
+      rows.forEach(r => {
+        const name = r.querySelector('.size-name')?.value.trim();
+        const price = parseFloat(r.querySelector('.size-price')?.value);
+        if (name && !isNaN(price)) {
+          sizes[name] = price;
+        }
+      });
+      return Object.keys(sizes).length > 0 ? sizes : null;
+    }
+
+    function populateSizesInUI(sizesObj) {
+      clearAllSizes();
+      if (!sizesObj) return;
+      if (typeof sizesObj === 'object') {
+        Object.entries(sizesObj).forEach(([sz, pr]) => {
+          addSingleCustomSizeRow(sz, pr);
+        });
+      }
+    }
+
     // ── CRUD Product ──
     function openAddProductModal() {
       document.getElementById('modal-product-title').innerText = 'Add New Bakery Creation';
       document.getElementById('prod-id').value = '';
       document.getElementById('prod-name').value = '';
       document.getElementById('prod-original-price').value = '';
-      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-price').value = '70.00';
       document.getElementById('prod-tag').value = '';
-      document.getElementById('prod-image').value = '/Rasmalai2.0.png';
+      document.getElementById('prod-image').value = 'assets/images/card_rasmalai_cake_real.jpg';
       document.getElementById('prod-desc').value = '';
       document.getElementById('prod-available').checked = true;
       document.getElementById('prod-discount-badge').classList.add('hidden');
+      applyCake5TierPreset();
       document.getElementById('product-modal').classList.remove('hidden');
       document.getElementById('product-modal').classList.add('flex');
     }
@@ -1032,6 +1194,13 @@
       document.getElementById('prod-desc').value = p.description || '';
       document.getElementById('prod-available').checked = p.is_available;
       
+      if (p.sizes && Object.keys(p.sizes).length > 0) {
+        populateSizesInUI(p.sizes);
+      } else {
+        clearAllSizes();
+        addSingleCustomSizeRow('5 inch', p.price);
+      }
+
       calculateDiscountMath('original');
       document.getElementById('product-modal').classList.remove('hidden');
       document.getElementById('product-modal').classList.add('flex');
@@ -1047,12 +1216,18 @@
       const id = document.getElementById('prod-id').value;
       const name = document.getElementById('prod-name').value;
       const orig = parseFloat(document.getElementById('prod-original-price').value) || null;
-      const finalPrice = parseFloat(document.getElementById('prod-price').value);
+      let finalPrice = parseFloat(document.getElementById('prod-price').value);
       const tag = document.getElementById('prod-tag').value;
       const catId = parseInt(document.getElementById('prod-cat-id').value) || 1;
       const img = document.getElementById('prod-image').value;
       const desc = document.getElementById('prod-desc').value;
       const isAvailable = document.getElementById('prod-available').checked;
+      const sizes = collectSizesFromUI();
+
+      if (sizes && Object.values(sizes).length > 0) {
+        const minSizePrice = Math.min(...Object.values(sizes));
+        if (!finalPrice || finalPrice === 0) finalPrice = minSizePrice;
+      }
 
       let discountPercent = 0;
       if (orig && orig > finalPrice) {
@@ -1068,7 +1243,8 @@
         category_id: catId,
         image_path: img,
         description: desc,
-        is_available: isAvailable
+        is_available: isAvailable,
+        sizes: sizes
       };
 
       const token = localStorage.getItem('gulabi_admin_token');
@@ -1088,9 +1264,9 @@
             const saved = await res.json();
             if (id) {
               const idx = products.findIndex(p => p.id == id);
-              if (idx !== -1) products[idx] = saved;
+              if (idx !== -1) products[idx] = { ...saved, sizes };
             } else {
-              products.unshift(saved);
+              products.unshift({ ...saved, sizes });
             }
             localStorage.setItem('gulabi_products', JSON.stringify(products));
             closeProductModal();
