@@ -210,8 +210,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderCart();
 });
 
-// --- BACKEND PRODUCT SYNC ---
+// --- BACKEND & LOCAL CATALOGUE SYNC ---
 async function fetchProductsFromBackend() {
+  // 1. Sync from local admin dashboard storage if available
+  try {
+    const localProds = JSON.parse(localStorage.getItem('gulabi_products') || '[]');
+    if (Array.isArray(localProds) && localProds.length > 0) {
+      localProds.forEach(lp => {
+        const key = Object.keys(PRODUCTS).find(k => 
+          PRODUCTS[k].name.toLowerCase().trim() === lp.name.toLowerCase().trim() ||
+          PRODUCTS[k].dbId === lp.id
+        );
+        if (key) {
+          if (lp.price) PRODUCTS[key].price = parseFloat(lp.price);
+          if (lp.sizes) PRODUCTS[key].sizes = lp.sizes;
+          if (lp.image_path) PRODUCTS[key].image = lp.image_path;
+          if (lp.description) PRODUCTS[key].shortDesc = lp.description;
+          if (lp.tag) PRODUCTS[key].tag = lp.tag;
+        } else {
+          // New product created via admin portal (e.g. Filter Kaapi Tres Leches Cake)!
+          const newKey = `item-custom-${lp.id || Date.now()}`;
+          const defaultSizes = lp.sizes || { '5 inch': parseFloat(lp.price) || 70 };
+          PRODUCTS[newKey] = {
+            id: newKey,
+            dbId: lp.id || Date.now(),
+            name: lp.name,
+            shortDesc: lp.description || 'Artisanal handcrafted sweet creation.',
+            category: lp.category_id === 2 ? 'cupcakes' : 'cakes',
+            price: parseFloat(lp.price) || (Object.values(defaultSizes)[0] || 70),
+            sizes: defaultSizes,
+            serves: 'Available in bespoke sizes',
+            image: lp.image_path || 'assets/images/card_rasmalai_cake_real.jpg',
+            diets: ['eggless', 'signature'],
+            tag: lp.tag || 'NEW CREATION ✨',
+            sensory: { floral: 75, sweetness: 60, richness: 85 },
+            pairing: "Chef's Pairing: Flat White or Single-Estate Assam Chai.",
+            notes: ['Pure NZ Butter', 'Organic Rosewater', 'Artisanal Spices']
+          };
+        }
+      });
+    }
+  } catch (e) {
+    console.log('Local product catalogue sync ready.');
+  }
+
+  // 2. Sync from PostgreSQL Backend API
   try {
     const res = await fetch(`${API_BASE_URL}/products`);
     if (!res.ok) return;
